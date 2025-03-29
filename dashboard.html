@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صالون النخبة - نظام الإدارة</title>
+    <title>نظام صالون النخبة</title>
     <style>
         :root {
             --primary: #2d3436;
@@ -18,108 +18,92 @@
             background: #f5f6fa;
         }
 
-        /* شريط التحكم العلوي */
+        /* شريط التحكم */
         .control-bar {
             background: var(--primary);
             padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .control-bar h1 {
             color: white;
-            margin: 0;
-            font-size: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .profile-btn {
-            background: var(--gold);
-            color: var(--primary);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .profile-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(253,203,110,0.3);
-        }
-
-        /* قائمة الخدمات */
+        /* شبكة الخدمات */
         .services-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            gap: 2rem;
             padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .service-card {
             background: white;
             border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: 0.3s;
-            position: relative;
-            overflow: hidden;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
         }
 
-        .service-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--accent);
-            transform: scaleX(0);
-            transition: 0.3s;
-        }
-
-        .service-card:hover::after {
-            transform: scaleX(1);
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
         .service-price {
+            font-size: 2rem;
             color: var(--accent);
-            font-size: 1.8rem;
             margin: 1rem 0;
             font-weight: bold;
         }
 
-        .service-btn {
+        .select-btn {
             background: var(--accent);
             color: white;
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            width: 100%;
+            padding: 1rem 2rem;
+            border-radius: 30px;
             cursor: pointer;
+            font-size: 1.1rem;
             transition: 0.3s;
         }
 
-        .service-btn:hover {
-            background: #0873c4;
-        }
-
-        /* قائمة الموظفين */
-        .employees-panel {
+        /* لوحة الموظفين */
+        .employee-panel {
             position: fixed;
             top: 0;
-            right: -320px;
-            width: 320px;
+            right: -400px;
+            width: 400px;
             height: 100vh;
             background: white;
             box-shadow: -5px 0 20px rgba(0,0,0,0.1);
             padding: 2rem;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
         }
 
         .panel-open { right: 0; }
+
+        .employee-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .employee-card:hover {
+            transform: translateX(10px);
+            background: var(--gold);
+        }
 
         .close-panel {
             position: absolute;
@@ -129,133 +113,107 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--secondary);
-        }
-
-        .employee-card {
-            padding: 1rem;
-            margin: 1rem 0;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-
-        .employee-card:hover {
-            border-color: var(--accent);
-            transform: translateX(10px);
-        }
-
-        /* إحصائيات الموظف */
-        .employee-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .stat-item {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
         }
     </style>
 </head>
 <body>
+    <!-- شريط التحكم -->
     <div class="control-bar">
-        <h1>نظام إدارة الصالون</h1>
-        <button class="profile-btn" onclick="toggleEmployeesPanel()">الملف الشخصي</button>
+        <h1>صالون النخبة</h1>
+        <button onclick="toggleEmployeeProfiles()">الملفات الشخصية</button>
     </div>
 
-    <div class="services-container" id="servicesContainer">
-        <!-- سيتم ملؤها بالخدمات -->
+    <!-- قائمة الخدمات -->
+    <div class="services-container" id="servicesGrid">
+        <!-- سيتم ملؤها بالجافاسكريبت -->
     </div>
 
-    <div class="employees-panel" id="employeesPanel">
-        <button class="close-panel" onclick="toggleEmployeesPanel()">×</button>
-        <h2 style="color: var(--primary);">فريق العمل</h2>
+    <!-- لوحة اختيار الموظف -->
+    <div class="employee-panel" id="employeePanel">
+        <button class="close-panel" onclick="closePanel()">×</button>
+        <h2>اختر الموظف</h2>
         <div id="employeesList"></div>
     </div>
 
     <script>
-        // بيانات الخدمات الكاملة
-        const salonServices = [
-            { id: 1, name: 'قص شعر رجالي', price: 50 },
-            { id: 2, name: 'تصفيف شعر نسائي', price: 80 },
-            { id: 3, name: 'صبغ شعر كامل', price: 120 },
-            { id: 4, name: 'حلاقة لحية', price: 30 },
-            { id: 5, name: 'تنظيف بشرة', price: 70 },
-            { id: 6, name: 'مساج فروة الرأس', price: 40 },
-            { id: 7, name: 'تفتيح اللحية', price: 25 },
-            { id: 8, name: 'تسريحة أطفال', price: 35 }
+        // بيانات الخدمات
+        const services = [
+            { id: 1, name: 'قص شعر رجالي كلاسيكي', price: 60 },
+            { id: 2, name: 'تصفيف شعر نسائي', price: 120 },
+            { id: 3, name: 'حلاقة لحية دقيقة', price: 45 },
+            { id: 4, name: 'صبغة شعر كاملة', price: 180 },
+            { id: 5, name: 'مساج فروة الرأس', price: 75 },
+            { id: 6, name: 'تفتيح اللحية', price: 55 }
         ];
 
         // بيانات الموظفين
         const employees = [
             { 
+                id: 1, 
                 name: 'حمزة', 
-                clients: 45,
-                revenue: 3250,
+                clients: 85,
+                revenue: 4200,
                 rating: 4.8
             },
             { 
+                id: 2, 
                 name: 'ليلى', 
-                clients: 38,
-                revenue: 2850,
-                rating: 4.7
+                clients: 120,
+                revenue: 6800,
+                rating: 4.9
             }
         ];
 
         // تهيئة الخدمات
         function initServices() {
-            const container = document.getElementById('servicesContainer');
-            container.innerHTML = salonServices.map(service => `
+            const container = document.getElementById('servicesGrid');
+            container.innerHTML = services.map(service => `
                 <div class="service-card">
                     <h3>${service.name}</h3>
                     <div class="service-price">${service.price} درهم</div>
-                    <button class="service-btn" onclick="selectService(${service.id})">اختر الخدمة</button>
+                    <button class="select-btn" onclick="selectService(${service.id})">اختيار الخدمة</button>
                 </div>
             `).join('');
         }
 
-        // إدارة قائمة الموظفين
-        function toggleEmployeesPanel() {
-            document.getElementById('employeesPanel').classList.toggle('panel-open');
-        }
-
-        function renderEmployees() {
+        // عرض الموظفين
+        function showEmployees() {
+            const panel = document.getElementById('employeePanel');
+            panel.classList.add('panel-open');
+            
             const list = document.getElementById('employeesList');
             list.innerHTML = employees.map(emp => `
-                <div class="employee-card">
+                <div class="employee-card" onclick="selectEmployee(${emp.id})">
                     <h3>${emp.name}</h3>
-                    <div class="employee-stats">
-                        <div class="stat-item">
-                            <small>الزبائن</small>
-                            <div>${emp.clients}</div>
-                        </div>
-                        <div class="stat-item">
-                            <small>الإيرادات</small>
-                            <div>${emp.revenue} درهم</div>
-                        </div>
-                        <div class="stat-item" style="grid-column: 1 / -1;">
-                            <small>التقييم</small>
-                            <div>${'★'.repeat(Math.floor(emp.rating))}${emp.rating % 1 ? '½' : ''}</div>
-                        </div>
+                    <div>
+                        <small>الزبائن: ${emp.clients}</small><br>
+                        <small>الإيرادات: ${emp.revenue} درهم</small>
                     </div>
                 </div>
             `).join('');
         }
 
         // اختيار الخدمة
+        let selectedService = null;
         function selectService(serviceId) {
-            const service = salonServices.find(s => s.id === serviceId);
-            toggleEmployeesPanel();
-            // يمكن إضافة منطق اختيار الموظف هنا
+            selectedService = services.find(s => s.id === serviceId);
+            showEmployees();
+        }
+
+        // اختيار الموظف
+        function selectEmployee(employeeId) {
+            const employee = employees.find(e => e.id === employeeId);
+            // افتح نموذج إدخال بيانات الزبون هنا
+            window.location.href = 'payment.html?service=${selectedService.id}&employee=${employee.id}';
+        }
+
+        // إغلاق اللوحة
+        function closePanel() {
+            document.getElementById('employeePanel').classList.remove('panel-open');
         }
 
         // التهيئة الأولية
         initServices();
-        renderEmployees();
     </script>
 </body>
 </html>
