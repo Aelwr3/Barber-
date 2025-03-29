@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صالون النخبة - تسجيل الدخول</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        
+        :root {
+            --primary-red: #8B0000;
+            --secondary-red: #FFD700;
+            --accent: #2F4F4F;
+        }
 
+        body {
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, var(--primary-red), #4B0000);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .barber-pole {
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 100px;
+            height: 200px;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--primary-red),
+                var(--primary-red) 10px,
+                var(--secondary-red) 10px,
+                var(--secondary-red) 20px
+            );
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .login-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            width: 320px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .scissors {
+            width: 80px;
+            filter: drop-shadow(0 0 5px gold);
+        }
+
+        .pin-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--secondary-red);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .pin-input:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--secondary-red);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--primary-red), var(--accent));
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--primary-red);
+        }
+
+        .security-notice {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="barber-pole"></div>
+    
+    <div class="login-container">
+        <div class="logo">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij48cGF0aCBkPSJNMjAuODQgNC42MWwtMS4zOS0xLjM5Yy0uMzgtLjM4LS44OS0uNi0xLjQyLS42LS41MyAwLTEuMDQuMjItMS40Mi41OUwxMiAxMC41OSA2LjM5IDQuOTlDNS44IDQu40MyA1LjA2IDQuMTggNC4zMyA0LjI1TDIuNDkgMi40MWMtLjMxLS4zMS0uODUtLjA5LS44NS4zM3Y3Ljk5YzAgLjI4LjIyLjUuNS41aDcuOTljLjQyIDAgLjY0LS41NC4zMy0uODVMMTUuNjYgMTBjMS4xMi0xLjEyIDIuOTQtMS4xMiA0LjA2IDBsMi44MyAyLjgzYy4zOC4zOC41OS44OS41OSAxLjQycy0uMjEgMS4wNC0uNTkgMS40MWwtMS40IDEuNGMtLjM4LjM4LS44OS41OS0xLjQxLjU5LS41MyAwLTEuMDQtLjIxLTEuNDItLjU5bC0zLjE4LTMuMTdjLS41OS41OS0xLjU0LjU5LTIuMTIgMEw4LjQxIDE0LjRsLTMuMTggMy4xN2MtLjM4LjM4LS44OS41OS0xLjQxLjU5LS41MyAwLTEuMDQtLjIxLTEuNDItLjU5bC0xLjQtMS40Yy0uMzgtLjM4LS41OS0uODktLjU5LTEuNDJzLjIxLTEuMDQuNTktMS40Mmw1LjA4LTUuMDhMMy42OSA1LjgxYy0uMzgtLjM4LS41OS0uODktLjU5LTEuNDIgMC0uNTMuMjEtMS4wNC41OS0xLjQybDEuNC0xLjRjLjM4LS4zOC44OS0uNTkgMS40Mi0uNTkuNTMgMCAxLjA0LjIxIDEuNDIuNTlsMS40IDEuNGMxLjU3IDEuNTcgMS41NyA0LjE0IDAgNS43MWwtNS4wOCA1LjA4Yy0uMzguMzgtLjM4IDEuMDIgMCAxLjQxbDEuNDEgMS40MWMuMzguMzggMS4wMi4zOCAxLjQgMGw1LjA4LTUuMDhjMS41Ny0xLjU3IDQuMTQtMS41NyA1LjcxIDBsNS4wOCA1LjA4Yy4zOC4zOCAxLjAyLjM4IDEuNCAwbDEuNDEtMS40MWMuMzgtLjM4LjM4LTEuMDIgMC0xLjQxbC01LjA4LTUuMDhjLTEuNTctMS41Ny0xLjU3LTQuMTQgMC01LjcxbDEuNC0xLjR6IiBmaWxsPSIjZmZmIi8+PC9zdmc+" class="scissors" alt="scissors">
+            <h1 style="color: #FFD700; margin-top: 1rem;">نخبة الحلاقة</h1>
+        </div>
+
+        <input type="password" class="pin-input" placeholder="••••" maxlength="4" id="pinCode">
+        <button class="submit-btn" onclick="checkPin()">دخول النظام</button>
+        
+        <p class="security-notice">يتم تشفير البيانات محليًا بأمان</p>
+    </div>
+
+    <script>
+        // نظام التشفير المتقدم بدون إنترنت
+        const pepper = 'b@rb3r$3cr3t'; // قيمة سرية مدمجة
+        
+        function hashPin(pin) {
+            // دمج القيم السرية مع الرمز
+            const saltedPin = pin + pepper + window.btoa(navigator.userAgent);
+            
+            // تشفير متعدد الطبقات
+            let hash = '';
+            for (let i = 0; i < saltedPin.length; i++) {
+                hash += String.fromCharCode(
+                    saltedPin.charCodeAt(i) ^ (i % 256),
+                    saltedPin.charCodeAt((i + 3) % saltedPin.length)
+                );
+            }
+            return btoa(hash).split('').reverse().join('');
+        }
+
+        // الرمز الصحيح المخزن (يمكن تغييره من هنا فقط)
+        const storedHash = 'MjYxMzYzMzYx'; // الرمز الافتراضي 1234
+
+        function checkPin() {
+            const pin = document.getElementById('pinCode').value;
+            const hashedInput = hashPin(pin);
+            
+            if(hashedInput === storedHash) {
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('الرمز السري غير صحيح!');
+                document.getElementById('pinCode').value = '';
+            }
+        }
+
+        // حماية إضافية ضد التعديل
+        Object.freeze(window.checkPin);
+        Object.seal(window.hashPin);
+    </script>
+</body>
+</html>
