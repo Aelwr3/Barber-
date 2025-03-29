@@ -28,18 +28,19 @@
 
         .background-grid {
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
             gap: 1.5rem;
             position: absolute;
             width: 100%;
             height: 100%;
             opacity: 0.1;
             pointer-events: none;
+            padding: 2rem;
         }
 
         .grid-icon {
             width: 60px;
-            filter: grayscale(1) brightness(2);
+            filter: grayscale(1) brightness(1.5);
             animation: float 8s infinite ease-in-out;
             justify-self: center;
         }
@@ -58,78 +59,7 @@
             margin: 20px;
         }
 
-        .brand-logo {
-            width: 120px;
-            margin: 0 auto 1.5rem;
-            display: block;
-            filter: drop-shadow(0 0 12px rgba(197, 164, 126, 0.25));
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .auth-title {
-            font-family: 'Amiri', serif;
-            text-align: center;
-            color: var(--accent);
-            font-size: 2.2rem;
-            margin-bottom: 2rem;
-            line-height: 1.4;
-        }
-
-        .pin-input {
-            font-family: 'Tajawal', sans-serif;
-            width: 100%;
-            padding: 1rem;
-            margin: 1rem 0;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1.1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn {
-            font-family: 'Amiri', serif;
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--accent), #b08f69);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .message {
-            text-align: center;
-            padding: 1rem;
-            margin-top: 1rem;
-            border-radius: 8px;
-            display: none;
-            animation: fadeIn 0.3s;
-        }
-
-        .success {
-            background: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-
-        .error {
-            background: rgba(244, 67, 54, 0.2);
-            color: var(--error);
-        }
-
+        /* الأنيميشنات */
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(3deg); }
@@ -139,17 +69,32 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* الرسائل */
+        .status-message {
+            text-align: center;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success { background: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .error { background: rgba(244, 67, 54, 0.2); color: var(--error); }
     </style>
 </head>
 <body>
     <div class="background-grid">
         <!-- إضافة جميع الأيقونات المطلوبة -->
-        <img src="https://cdn-icons-png.flaticon.com/512/2241/2241588.png" class="grid-icon" style="grid-column: 2">
-        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" class="grid-icon" style="grid-column: 4">
-        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" class="grid-icon" style="grid-column: 6">
-        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" class="grid-icon" style="grid-column: 8">
-        <img src="https://cdn-icons-png.flaticon.com/512/5311/5311903.png" class="grid-icon" style="grid-column: 10">
-        <img src="https://cdn-icons-png.flaticon.com/512/6437/6437026.png" class="grid-icon" style="grid-column: 12">
+        <img src="https://cdn-icons-png.flaticon.com/512/2241/2241588.png" class="grid-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" class="grid-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" class="grid-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" class="grid-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/5311/5311903.png" class="grid-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/6437/6437026.png" class="grid-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/17755/17755007.png" class="grid-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/1718/1718842.png" class="grid-icon">
     </div>
 
     <div class="auth-container">
@@ -168,12 +113,11 @@
                id="systemPin"
                maxlength="8">
 
+        <div class="status-message" id="statusMessage"></div>
+
         <button class="submit-btn" onclick="verifyAccess()">
             الدخول للنظام
         </button>
-
-        <div class="message success" id="successMsg">جاري التوجيه إلى النظام...</div>
-        <div class="message error" id="errorMsg">الرمز السري غير صحيح!</div>
     </div>
 
     <script>
@@ -197,37 +141,39 @@
 
         const validHash = createSecureHash(SYSTEM_CODE);
 
-        function showMessage(elementId) {
-            const messages = document.querySelectorAll('.message');
-            messages.forEach(msg => msg.style.display = 'none');
-            const msgElement = document.getElementById(elementId);
+        function showMessage(text, isSuccess) {
+            const msgElement = document.getElementById('statusMessage');
+            msgElement.textContent = text;
+            msgElement.className = `status-message ${isSuccess ? 'success' : 'error'}`;
             msgElement.style.display = 'block';
         }
 
         function verifyAccess() {
             const input = document.getElementById('systemPin').value;
+            
+            if(!input) {
+                showMessage('الرجاء إدخال الرمز السري', false);
+                return;
+            }
+
             const hash = createSecureHash(input);
             
             if(hash === validHash) {
-                showMessage('successMsg');
+                showMessage('جاري تحويلك إلى لوحة التحكم...', true);
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 1500);
             } else {
-                showMessage('errorMsg');
+                showMessage('الرمز السري غير صحيح!', false);
                 const pinField = document.getElementById('systemPin');
-                pinField.style.borderColor = var(--error);
+                pinField.style.borderColor = '#ff4444';
                 setTimeout(() => {
                     pinField.style.borderColor = var(--accent);
                 }, 1000);
             }
         }
 
-        // حماية الدوال من التعديل
-        Object.defineProperties(window, {
-            verifyAccess: { writable: false, configurable: false },
-            createSecureHash: { writable: false, configurable: false }
-        });
+        Object.freeze(window.verifyAccess);
     </script>
 </body>
 </html>
