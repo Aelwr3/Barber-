@@ -3,154 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salon Pro - نظام الإدارة</title>
+    <title>EliteSalon Pro</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap');
         
         :root {
-            --primary: #2C3E50;
-            --accent: #E67E22;
-            --text: #34495E;
+            --navy: #0a192f;
+            --gold: #FFD700;
+            --slate: #8892b0;
+            --light: #f8f9fa;
         }
 
         body {
-            font-family: 'Amiri', serif;
+            font-family: 'Tajawal', sans-serif;
             margin: 0;
             min-height: 100vh;
             display: grid;
             place-items: center;
-            background: #f8f9fa;
+            background: linear-gradient(15deg, #0a192f 30%, #020c1b);
+            color: var(--light);
         }
 
-        .auth-container {
-            background: white;
-            padding: 3rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
+        .auth-card {
+            background: rgba(10, 25, 47, 0.95);
+            padding: 3rem 4rem;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 480px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                rgba(255,215,0,0.4),
+                transparent 70%
+            );
+            animation: rotate 6s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .branding {
             text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
         }
 
-        .brand-logo {
-            width: 120px;
-            margin-bottom: 2rem;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            filter: drop-shadow(0 0 15px rgba(255,215,0,0.3));
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.03); opacity: 1; }
         }
 
         .auth-title {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
             font-size: 1.8rem;
+            margin: 0;
+            font-weight: 700;
+            background: linear-gradient(45deg, #FFD700, #FFEC8B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-container {
+            position: relative;
+            margin: 2rem 0;
         }
 
         .pin-input {
             width: 100%;
-            padding: 1rem;
-            margin: 1rem 0;
-            border: 2px solid #e0e0e0;
+            padding: 1.2rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,215,0,0.2);
             border-radius: 8px;
-            font-size: 1.2rem;
-            color: var(--text);
-            transition: all 0.3s ease;
+            color: var(--light);
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .pin-input:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(230,126,34,0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(255,215,0,0.2);
+            background: rgba(255,255,255,0.08);
         }
 
-        .auth-button {
+        .submit-btn {
             width: 100%;
-            padding: 1rem;
-            background: var(--accent);
-            color: white;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, rgba(255,215,0,0.9), rgba(255,215,0,0.7));
             border: none;
             border-radius: 8px;
+            color: var(--navy);
             font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .auth-button:hover {
-            background: #d35400;
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255,255,255,0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+
+        .submit-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,215,0,0.3);
         }
 
-        .security-info {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-top: 2rem;
+        .loader {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 2rem auto;
+            animation: spin 1.2s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
 
         .error-message {
-            color: #e74c3c;
+            color: #ff4444;
+            text-align: center;
             padding: 1rem;
-            display: none;
-            animation: fadeIn 0.3s;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .active-error {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" 
-             class="brand-logo" 
-             alt="Salon Pro Logo">
-        
-        <h1 class="auth-title">نظام إدارة الصالون الاحترافي</h1>
-        
-        <input type="password" 
-               class="pin-input" 
-               placeholder="كلمة المرور النظامية"
-               id="systemPin"
-               maxlength="8">
-        
-        <button class="auth-button" onclick="checkSystemAccess()">
-            الدخول للنظام
+    <div class="auth-card">
+        <div class="branding">
+            <svg class="logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.84 4.61L19.45 5.99L12 13.42L4.55 5.99L3.16 4.61C2.57 4.02 2.57 3.07 3.16 2.48L4.48 1.16C5.07 0.57 6.02 0.57 6.61 1.16L12 6.55L17.39 1.16C17.98 0.57 18.93 0.57 19.52 1.16L20.84 2.48C21.43 3.07 21.43 4.02 20.84 4.61ZM19.45 11.01L12 18.46L4.55 11.01L3.16 12.4C2.57 13 2.57 14.95 3.16 15.54L4.48 16.86C5.07 17.45 6.02 17.45 6.61 16.86L12 11.47L17.39 16.86C17.98 17.45 18.93 17.45 19.52 16.86L20.84 15.54C21.43 14.95 21.43 13 20.84 12.4L19.45 11.01Z" fill="#FFD700"/>
+            </svg>
+            <h1 class="auth-title">نظام التحكم الفضيـ<wbr>لـى</h1>
+        </div>
+
+        <div class="input-container">
+            <input type="password" 
+                   class="pin-input" 
+                   placeholder="••••••••"
+                   id="masterPin"
+                   maxlength="8">
+        </div>
+
+        <button class="submit-btn" onclick="initiateSystemAccess()">
+            تفعيل النظام
         </button>
-        
+
+        <svg class="loader" viewBox="0 0 50 50" id="loadingSpinner">
+            <path d="M25 45C16.2 45 9 37.8 9 29S16.2 13 25 13s16 7.2 16 16" 
+                  fill="none" 
+                  stroke="#FFD700" 
+                  stroke-width="4"
+                  stroke-linecap="round"/>
+        </svg>
+
         <div class="error-message" id="systemError"></div>
-        
-        <p class="security-info">
-            نظام آمن ومشفّر • الإصدار 1.0.0
-        </p>
     </div>
 
     <script>
-        // نظام التحقق المعزز
         const SYSTEM_CODE = '20250405';
-        const SECRET_KEY = 'S@l0nPr0_2024';
+        const CRYPTO_KEY = 'EliteSalon@Sec2024';
 
-        function generateAccessHash(input) {
-            const cryptoMix = input + SECRET_KEY + navigator.platform;
-            return btoa(cryptoMix).split('').reverse().join('');
+        async function generateSecureHash(input) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input + CRYPTO_KEY + navigator.hardwareConcurrency);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        const validHash = generateAccessHash(SYSTEM_CODE);
+        let validHash = '';
 
-        function checkSystemAccess() {
-            const input = document.getElementById('systemPin').value;
+        async function initialize() {
+            validHash = await generateSecureHash(SYSTEM_CODE);
+            Object.freeze(validHash);
+        }
+        initialize();
+
+        async function initiateSystemAccess() {
+            const pin = document.getElementById('masterPin').value;
+            const loader = document.querySelector('.loader');
             const errorElement = document.getElementById('systemError');
             
-            if(generateAccessHash(input) === validHash) {
-                window.location.href = '/dashboard';
-            } else {
+            loader.style.display = 'block';
+            document.querySelector('.submit-btn').disabled = true;
+
+            try {
+                const inputHash = await generateSecureHash(pin);
+                
+                if(inputHash === validHash) {
+                    loader.style.animation = 'spin 1s linear infinite, pulse 1.5s ease-in-out infinite';
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                } else {
+                    throw new Error('Authentication Failed');
+                }
+            } catch (error) {
                 errorElement.textContent = 'خطأ في المصادقة: الرجاء التحقق من بيانات الدخول';
-                errorElement.style.display = 'block';
-                setTimeout(() => errorElement.style.display = 'none', 3000);
+                errorElement.classList.add('active-error');
+                setTimeout(() => errorElement.classList.remove('active-error'), 3000);
+            } finally {
+                loader.style.display = 'none';
+                document.querySelector('.submit-btn').disabled = false;
             }
         }
 
-        // حماية ضد التلاعب
-        Object.defineProperties(window, {
-            checkSystemAccess: { configurable: false, writable: false },
-            generateAccessHash: { configurable: false, writable: false }
+        // حماية متقدمة
+        Object.defineProperty(window, 'initiateSystemAccess', {
+            value: initiateSystemAccess,
+            writable: false,
+            configurable: false
         });
     </script>
 </body>
