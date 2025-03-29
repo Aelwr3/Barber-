@@ -1,151 +1,233 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EliteBarber System</title>
+    <title>نظام إدارة الصالون</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;500;700&display=swap');:root {
-        --primary: #0a1a2f;
-        --secondary: #12263a;
-        --accent: #c5a47e;
-        --text: #e0e0e0;
-    }
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;500;700&display=swap');
+        
+        :root {
+            --primary: #0a1a2f;
+            --secondary: #12263a;
+            --accent: #c5a47e;
+            --text: #e0e0e0;
+            --error: #ff4444;
+        }
 
-    body {
-        font-family: 'Tajawal', sans-serif;
-        margin: 0;
-        min-height: 100vh;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        position: relative;
-        overflow: hidden;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-    .background-grid {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: center;
-        opacity: 0.1;
-        pointer-events: none;
-    }
+        .background-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            pointer-events: none;
+        }
 
-    .grid-icon {
-        width: 80px;
-        filter: brightness(2);
-        animation: float 8s infinite ease-in-out;
-    }
+        .grid-icon {
+            width: 60px;
+            filter: grayscale(1) brightness(2);
+            animation: float 8s infinite ease-in-out;
+            justify-self: center;
+        }
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
-    }
+        .auth-container {
+            position: relative;
+            z-index: 1;
+            background: rgba(18, 38, 58, 0.95);
+            width: 90%;
+            max-width: 450px;
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(197, 164, 126, 0.2);
+            box-shadow: 0 0 40px rgba(0,0,0,0.4);
+            margin: 20px;
+        }
 
-    .auth-container {
-        position: relative;
-        z-index: 1;
-        background: rgba(18, 38, 58, 0.95);
-        width: 90%;
-        max-width: 500px;
-        margin: 5rem auto;
-        padding: 3rem;
-        border-radius: 20px;
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(197, 164, 126, 0.2);
-        box-shadow: 0 0 40px rgba(0,0,0,0.4);
-        text-align: center;
-    }
+        .brand-logo {
+            width: 120px;
+            margin: 0 auto 1.5rem;
+            display: block;
+            filter: drop-shadow(0 0 12px rgba(197, 164, 126, 0.25));
+            animation: pulse 2s ease-in-out infinite;
+        }
 
-    .brand-logo {
-        width: 140px;
-        margin-bottom: 2rem;
-    }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
-    .auth-title {
-        color: var(--accent);
-        font-size: 2rem;
-        margin-bottom: 2rem;
-    }
+        .auth-title {
+            font-family: 'Amiri', serif;
+            text-align: center;
+            color: var(--accent);
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
 
-    .pin-input {
-        width: 100%;
-        padding: 1.2rem;
-        background: rgba(255,255,255,0.05);
-        border: 2px solid var(--accent);
-        border-radius: 10px;
-        color: var(--text);
-        font-size: 1.1rem;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
+        .pin-input {
+            font-family: 'Tajawal', sans-serif;
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
 
-    .submit-btn {
-        width: 100%;
-        padding: 1.2rem;
-        background: linear-gradient(135deg, var(--accent), #b08f69);
-        border: none;
-        border-radius: 10px;
-        color: #fff;
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
+        .submit-btn {
+            font-family: 'Amiri', serif;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent), #b08f69);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
 
-    .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(197, 164, 126, 0.3);
-    }
+        .message {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
 
-    .message {
-        margin-top: 1rem;
-        font-size: 1.1rem;
-        color: #ff6b6b;
-        visibility: hidden;
-    }
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
 
-</style>
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            color: var(--error);
+        }
 
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
     <div class="background-grid">
-        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/10033/10033281.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/531/531190.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/6437/6437026.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/17755/17755007.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/1718/1718842.png" class="grid-icon">
-    </div><div class="auth-container">
-    <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" class="brand-logo" alt="EliteBarber Logo">
-    <h1 class="auth-title">نظام الإدارة الاحترافي</h1>
-    <input type="password" class="pin-input" id="systemPin" placeholder="كلمة المرور النظامية" maxlength="8">
-    <button class="submit-btn" onclick="verifyAccess()">تفعيل النظام</button>
-    <p class="message" id="messageBox"></p>
-</div>
+        <!-- إضافة جميع الأيقونات المطلوبة -->
+        <img src="https://cdn-icons-png.flaticon.com/512/2241/2241588.png" class="grid-icon" style="grid-column: 2">
+        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" class="grid-icon" style="grid-column: 4">
+        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" class="grid-icon" style="grid-column: 6">
+        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" class="grid-icon" style="grid-column: 8">
+        <img src="https://cdn-icons-png.flaticon.com/512/5311/5311903.png" class="grid-icon" style="grid-column: 10">
+        <img src="https://cdn-icons-png.flaticon.com/512/6437/6437026.png" class="grid-icon" style="grid-column: 12">
+    </div>
 
-<script>
-    const SYSTEM_CODE = '20250405';
+    <div class="auth-container">
+        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" 
+             class="brand-logo" 
+             alt="شعار النظام">
 
-    function verifyAccess() {
-        const input = document.getElementById('systemPin').value;
-        const messageBox = document.getElementById('messageBox');
-        
-        if (input === SYSTEM_CODE) {
-            messageBox.style.color = '#4CAF50';
-            messageBox.textContent = 'تم الدخول بنجاح!';
-            messageBox.style.visibility = 'visible';
-            setTimeout(() => window.location.href = 'dashboard.html', 1000);
-        } else {
-            messageBox.style.color = '#ff6b6b';
-            messageBox.textContent = 'كلمة المرور غير صحيحة!';
-            messageBox.style.visibility = 'visible';
+        <h1 class="auth-title">
+            نظام الإدارة المتكامل<br>
+            <span style="font-size: 0.8em; display: block; margin-top: 0.5em;">لصالونات الحلاقة</span>
+        </h1>
+
+        <input type="password" 
+               class="pin-input" 
+               placeholder="أدخل الرمز السري"
+               id="systemPin"
+               maxlength="8">
+
+        <button class="submit-btn" onclick="verifyAccess()">
+            الدخول للنظام
+        </button>
+
+        <div class="message success" id="successMsg">جاري التوجيه إلى النظام...</div>
+        <div class="message error" id="errorMsg">الرمز السري غير صحيح!</div>
+    </div>
+
+    <script>
+        const SYSTEM_CODE = '20250405';
+        const SECRET_KEY = 'SalonPro@2024';
+
+        function createSecureHash(input) {
+            const salt = btoa(navigator.platform + screen.width);
+            const mixed = input + SECRET_KEY + salt;
+            let hash = '';
+            
+            for(let i = 0; i < mixed.length; i++) {
+                hash += String.fromCharCode(
+                    mixed.charCodeAt(i) ^ (i % 255),
+                    mixed.charCodeAt((i + 5) % mixed.length)
+                );
+            }
+            
+            return btoa(hash).split('').reverse().join('');
         }
-    }
-</script>
 
+        const validHash = createSecureHash(SYSTEM_CODE);
+
+        function showMessage(elementId) {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(msg => msg.style.display = 'none');
+            const msgElement = document.getElementById(elementId);
+            msgElement.style.display = 'block';
+        }
+
+        function verifyAccess() {
+            const input = document.getElementById('systemPin').value;
+            const hash = createSecureHash(input);
+            
+            if(hash === validHash) {
+                showMessage('successMsg');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } else {
+                showMessage('errorMsg');
+                const pinField = document.getElementById('systemPin');
+                pinField.style.borderColor = var(--error);
+                setTimeout(() => {
+                    pinField.style.borderColor = var(--accent);
+                }, 1000);
+            }
+        }
+
+        // حماية الدوال من التعديل
+        Object.defineProperties(window, {
+            verifyAccess: { writable: false, configurable: false },
+            createSecureHash: { writable: false, configurable: false }
+        });
+    </script>
 </body>
 </html>
