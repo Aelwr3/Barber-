@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>نظام إدارة الصالون</title>
+    <style>
+        :root {
+            --primary: #2C3E50;
+            --secondary: #34495E;
+            --accent: #3498DB;
+        }
+
+        /* تصميم القائمة الجانبية */
+        .employees-sidebar {
+            position: fixed;
+            right: -250px;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--primary);
+            transition: 0.3s;
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: -2px 0 15px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-open { right: 0; }
+
+        .toggle-sidebar {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1001;
+        }
+
+        /* قائمة الموظفين */
+        .employee-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+
+        .employee-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: white;
+        }
+
+        .employee-item:hover {
+            background: var(--accent);
+            transform: translateX(-10px);
+        }
+
+        /* الواجهة الرئيسية */
+        .dashboard {
+            margin-right: 20px;
+            transition: 0.3s;
+        }
+
+        .current-employee {
+            background: var(--secondary);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-sidebar" onclick="toggleSidebar()">☰ إدارة الموظفين</button>
+
+    <div class="employees-sidebar">
+        <h3 style="color: white; border-bottom: 2px solid var(--accent); padding-bottom: 10px;">
+            فريق العمل
+            <button onclick="addEmployee()" style="float: left; background: none; border: none; color: white; cursor: pointer;">+</button>
+        </h3>
+        
+        <ul class="employee-list" id="employeeList">
+            <!-- يتم ملؤها بالجافاسكريبت -->
+        </ul>
+    </div>
+
+    <div class="dashboard">
+        <div class="current-employee">
+            <h2>الموظف الحالي: <span id="currentEmployee">حمزة</span></h2>
+        </div>
+
+        <!-- باقي عناصر لوحة التحكم -->
+    </div>
+
+    <script>
+        // بيانات الموظفين الأولية
+        let employees = ['حمزة', 'يوسف', 'أحمد'];
+        let activeEmployee = employees[0];
+
+        // عرض قائمة الموظفين
+        function renderEmployees() {
+            const list = document.getElementById('employeeList');
+            list.innerHTML = employees.map(emp => `
+                <li class="employee-item" 
+                    onclick="switchEmployee('${emp}')"
+                    oncontextmenu="manageEmployee(event, '${emp}')">
+                    ${emp}
+                </li>
+            `).join('');
+        }
+
+        // تبديل الموظف النشط
+        function switchEmployee(emp) {
+            activeEmployee = emp;
+            document.getElementById('currentEmployee').textContent = emp;
+            toggleSidebar();
+            // هنا يمكنك إضافة كود لتحميل بيانات الموظف
+        }
+
+        // إدارة الموظفين (زر + بالماوس الأيمن)
+        function addEmployee() {
+            const newEmp = prompt('أدخل اسم الموظف الجديد:');
+            if(newEmp) {
+                employees.push(newEmp);
+                renderEmployees();
+            }
+        }
+
+        function manageEmployee(e, emp) {
+            e.preventDefault();
+            if(confirm(`هل تريد حذف ${emp}؟`)) {
+                employees = employees.filter(e => e !== emp);
+                renderEmployees();
+            }
+        }
+
+        // فتح/إغلاق القائمة
+        function toggleSidebar() {
+            document.querySelector('.employees-sidebar').classList.toggle('sidebar-open');
+        }
+
+        // التهيئة الأولية
+        renderEmployees();
+    </script>
+</body>
+</html>
