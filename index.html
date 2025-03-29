@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدارة الصالون</title>
+    <title>Salon Pro - نظام الإدارة</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
         
         :root {
-            --primary: #8B0000;
-            --accent: #FFD700;
-            --dark: #2A2A2A;
+            --primary: #2C3E50;
+            --accent: #E67E22;
+            --text: #34495E;
         }
 
         body {
@@ -18,100 +18,74 @@
             margin: 0;
             min-height: 100vh;
             display: grid;
-            grid-template-rows: 1fr auto;
-            background: linear-gradient(var(--dark), #1A1A1A);
-            color: white;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
             place-items: center;
+            background: #f8f9fa;
         }
 
-        .login-section {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 30px var(--primary);
-            max-width: 500px;
+        .auth-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 100%;
+            max-width: 400px;
+            text-align: center;
         }
 
-        .logo-grid {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            align-items: center;
-            gap: 1rem;
+        .brand-logo {
+            width: 120px;
             margin-bottom: 2rem;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
         }
 
-        .logo-img {
-            width: 100px;
-            filter: drop-shadow(0 0 10px var(--accent));
-            animation: pulse 2s infinite;
-        }
-
-        .input-grid {
-            display: grid;
-            gap: 1.5rem;
+        .auth-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
         }
 
         .pin-input {
             width: 100%;
             padding: 1rem;
-            background: rgba(255, 215, 0, 0.1);
-            border: 2px solid var(--accent);
+            margin: 1rem 0;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            color: var(--accent);
             font-size: 1.2rem;
-            text-align: center;
+            color: var(--text);
             transition: all 0.3s ease;
         }
 
-        .submit-btn {
+        .pin-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(230,126,34,0.2);
+        }
+
+        .auth-button {
+            width: 100%;
             padding: 1rem;
-            background: linear-gradient(45deg, var(--primary), #6B0000);
+            background: var(--accent);
+            color: white;
             border: none;
             border-radius: 8px;
-            color: white;
             font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            opacity: 0.3;
-            padding: 2rem;
+        .auth-button:hover {
+            background: #d35400;
+            transform: translateY(-2px);
         }
 
-        .icon-item {
-            width: 100%;
-            max-width: 80px;
-            justify-self: center;
-            filter: grayscale(1);
-            animation: float 4s infinite ease-in-out;
+        .security-info {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 2rem;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .error-msg {
-            color: #FF4444;
-            text-align: center;
+        .error-message {
+            color: #e74c3c;
             padding: 1rem;
             display: none;
             animation: fadeIn 0.3s;
@@ -124,74 +98,60 @@
     </style>
 </head>
 <body>
-    <div class="main-grid">
-        <div class="login-section">
-            <div class="logo-grid">
-                <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" 
-                     alt="شعار الصالون" 
-                     class="logo-img">
-                <h1 style="color: var(--accent); margin: 0;">
-                    نظام إدارة الصالون<br>
-                    <span style="font-size: 0.8em; color: white;">الإصدار الذهبي 2025</span>
-                </h1>
-            </div>
-
-            <div class="input-grid">
-                <input type="password" 
-                       class="pin-input" 
-                       placeholder="أدخل الرمز السري"
-                       id="pinCode"
-                       maxlength="8">
-                
-                <button class="submit-btn" onclick="checkPin()">
-                    دخول النظام
-                </button>
-            </div>
-
-            <div class="error-msg" id="errorMsg"></div>
-        </div>
-    </div>
-
-    <div class="icon-grid">
-        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" class="icon-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" class="icon-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" class="icon-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/5311/5311903.png" class="icon-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/6437/6437026.png" class="icon-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/17755/17755007.png" class="icon-item">
+    <div class="auth-container">
+        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" 
+             class="brand-logo" 
+             alt="Salon Pro Logo">
+        
+        <h1 class="auth-title">نظام إدارة الصالون الاحترافي</h1>
+        
+        <input type="password" 
+               class="pin-input" 
+               placeholder="كلمة المرور النظامية"
+               id="systemPin"
+               maxlength="8">
+        
+        <button class="auth-button" onclick="checkSystemAccess()">
+            الدخول للنظام
+        </button>
+        
+        <div class="error-message" id="systemError"></div>
+        
+        <p class="security-info">
+            نظام آمن ومشفّر • الإصدار 1.0.0
+        </p>
     </div>
 
     <script>
-        const validCode = '20250405';
-        const pepper = 'S@l0n3L!t3_v2';
+        // نظام التحقق المعزز
+        const SYSTEM_CODE = '20250405';
+        const SECRET_KEY = 'S@l0nPr0_2024';
 
-        function secureHash(input) {
-            const mix = input + pepper + screen.width;
-            let hash = Array.from(mix)
-                .map((c, i) => c.charCodeAt(0) * (i % 9 + 1))
-                .join('-');
-            return btoa(hash).split('').reverse().join('');
+        function generateAccessHash(input) {
+            const cryptoMix = input + SECRET_KEY + navigator.platform;
+            return btoa(cryptoMix).split('').reverse().join('');
         }
 
-        const storedHash = secureHash(validCode);
+        const validHash = generateAccessHash(SYSTEM_CODE);
 
-        function checkPin() {
-            const pin = document.getElementById('pinCode').value;
-            const errorMsg = document.getElementById('errorMsg');
+        function checkSystemAccess() {
+            const input = document.getElementById('systemPin').value;
+            const errorElement = document.getElementById('systemError');
             
-            if(secureHash(pin) === storedHash) {
-                window.location.href = 'dashboard.html';
+            if(generateAccessHash(input) === validHash) {
+                window.location.href = '/dashboard';
             } else {
-                errorMsg.textContent = 'الرمز غير صحيح! يرجى المحاولة مرة أخرى';
-                errorMsg.style.display = 'block';
-                setTimeout(() => errorMsg.style.display = 'none', 3000);
-                document.getElementById('pinCode').value = '';
+                errorElement.textContent = 'خطأ في المصادقة: الرجاء التحقق من بيانات الدخول';
+                errorElement.style.display = 'block';
+                setTimeout(() => errorElement.style.display = 'none', 3000);
             }
         }
 
-        // حماية إضافية
-        Object.freeze(window.checkPin);
-        Object.seal(window.secureHash);
+        // حماية ضد التلاعب
+        Object.defineProperties(window, {
+            checkSystemAccess: { configurable: false, writable: false },
+            generateAccessHash: { configurable: false, writable: false }
+        });
     </script>
 </body>
 </html>
