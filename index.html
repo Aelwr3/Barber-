@@ -3,65 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نخبة الحلاقة - نظام الإدارة</title>
+    <title>نظام إدارة الصالون</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
         
         :root {
-            --primary-color: #8B0000;
-            --accent-gold: #FFD700;
-            --dark-bg: #2a2a2a;
+            --primary: #8B0000;
+            --accent: #FFD700;
+            --dark: #2A2A2A;
         }
 
         body {
             font-family: 'Amiri', serif;
-            background: linear-gradient(135deg, var(--dark-bg), #1a1a1a);
-            height: 100vh;
             margin: 0;
-            overflow: hidden;
-            position: relative;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: 1fr auto;
+            background: linear-gradient(var(--dark), #1A1A1A);
+            color: white;
         }
 
-        .background-icons {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            z-index: 0;
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            place-items: center;
         }
 
-        .background-icons img {
-            position: absolute;
-            width: 50px;
-            animation: float 6s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        .login-container {
-            position: relative;
-            z-index: 1;
-            background: rgba(0, 0, 0, 0.8);
+        .login-section {
+            background: rgba(0, 0, 0, 0.9);
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3);
-            width: 320px;
-            margin: auto;
-            backdrop-filter: blur(10px);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px var(--primary);
+            max-width: 500px;
+            width: 100%;
         }
 
-        .logo {
-            text-align: center;
+        .logo-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
-        .logo img {
+        .logo-img {
             width: 100px;
-            filter: drop-shadow(0 0 10px var(--accent-gold));
+            filter: drop-shadow(0 0 10px var(--accent));
             animation: pulse 2s infinite;
+        }
+
+        .input-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .pin-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            color: var(--accent);
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn {
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--primary), #6B0000);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            opacity: 0.3;
+            padding: 2rem;
+        }
+
+        .icon-item {
+            width: 100%;
+            max-width: 80px;
+            justify-self: center;
+            filter: grayscale(1);
+            animation: float 4s infinite ease-in-out;
         }
 
         @keyframes pulse {
@@ -69,41 +104,15 @@
             50% { transform: scale(1.05); }
         }
 
-        .pin-input {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--accent-gold);
-            border-radius: 8px;
-            color: var(--accent-gold);
-            font-size: 1.2rem;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .error-msg {
+            color: #FF4444;
             text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(45deg, var(--primary-color), #6B0000);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-        }
-
-        .submit-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-
-        .error-message {
-            color: #ff4444;
-            text-align: center;
-            margin-top: 1rem;
+            padding: 1rem;
             display: none;
             animation: fadeIn 0.3s;
         }
@@ -115,61 +124,74 @@
     </style>
 </head>
 <body>
-    <div class="background-icons">
-        <!-- إضافة أيقونات الخلفية -->
-        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" style="top:10%; left:20%">
-        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" style="top:30%; right:15%" animation-delay="0.5s">
-        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" style="top:50%; left:10%" animation-delay="1s">
-        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" style="top:70%; right:25%" animation-delay="1.5s">
+    <div class="main-grid">
+        <div class="login-section">
+            <div class="logo-grid">
+                <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" 
+                     alt="شعار الصالون" 
+                     class="logo-img">
+                <h1 style="color: var(--accent); margin: 0;">
+                    نظام إدارة الصالون<br>
+                    <span style="font-size: 0.8em; color: white;">الإصدار الذهبي 2025</span>
+                </h1>
+            </div>
+
+            <div class="input-grid">
+                <input type="password" 
+                       class="pin-input" 
+                       placeholder="أدخل الرمز السري"
+                       id="pinCode"
+                       maxlength="8">
+                
+                <button class="submit-btn" onclick="checkPin()">
+                    دخول النظام
+                </button>
+            </div>
+
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
     </div>
 
-    <div class="login-container">
-        <div class="logo">
-            <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" alt="شعار الصالون">
-            <h1 style="color: var(--accent-gold); margin-top: 1rem;">نظام الإدارة الذهبي</h1>
-        </div>
-
-        <input type="password" class="pin-input" placeholder="الرمز السري" id="pinCode" maxlength="8">
-        <button class="submit-btn" onclick="checkPin()">الدخول للنظام</button>
-        <div class="error-message" id="errorMsg"></div>
+    <div class="icon-grid">
+        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/5311/5311903.png" class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/6437/6437026.png" class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/17755/17755007.png" class="icon-item">
     </div>
 
     <script>
-        // نظام التشفير المتقدم
-        const pepper = 'S@l0n3L!t3';
-        const validCode = '20250405'; // الكود المطلوب
-        
+        const validCode = '20250405';
+        const pepper = 'S@l0n3L!t3_v2';
+
         function secureHash(input) {
-            const mix = input + pepper + navigator.hardwareConcurrency;
-            let hash = '';
-            for(let i = 0; i < mix.length; i++) {
-                hash += mix.charCodeAt(i) * (i % 7 + 1) + '-';
-            }
+            const mix = input + pepper + screen.width;
+            let hash = Array.from(mix)
+                .map((c, i) => c.charCodeAt(0) * (i % 9 + 1))
+                .join('-');
             return btoa(hash).split('').reverse().join('');
         }
 
-        // الكود الصحيح بعد التشفير
         const storedHash = secureHash(validCode);
 
         function checkPin() {
-            const input = document.getElementById('pinCode').value;
+            const pin = document.getElementById('pinCode').value;
             const errorMsg = document.getElementById('errorMsg');
             
-            if(secureHash(input) === storedHash) {
+            if(secureHash(pin) === storedHash) {
                 window.location.href = 'dashboard.html';
             } else {
-                errorMsg.textContent = 'الرمز السري غير صحيح!';
+                errorMsg.textContent = 'الرمز غير صحيح! يرجى المحاولة مرة أخرى';
                 errorMsg.style.display = 'block';
                 setTimeout(() => errorMsg.style.display = 'none', 3000);
                 document.getElementById('pinCode').value = '';
             }
         }
 
-        // حماية ضد التلاعب
-        Object.defineProperty(window, 'checkPin', {
-            writable: false,
-            configurable: false
-        });
+        // حماية إضافية
+        Object.freeze(window.checkPin);
+        Object.seal(window.secureHash);
     </script>
 </body>
 </html>
