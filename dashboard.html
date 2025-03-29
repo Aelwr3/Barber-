@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إدارة الصالون</title>
     <style>
         :root {
@@ -10,143 +11,156 @@
             --accent: #3498DB;
         }
 
-        /* تصميم القائمة الجانبية */
-        .employees-sidebar {
-            position: fixed;
-            right: -250px;
-            top: 0;
-            width: 250px;
-            height: 100vh;
-            background: var(--primary);
-            transition: 0.3s;
-            z-index: 1000;
-            padding: 20px;
-            box-shadow: -2px 0 15px rgba(0,0,0,0.2);
+        body {
+            font-family: 'Amiri', serif;
+            margin: 0;
+            background: #f5f6fa;
         }
 
-        .sidebar-open { right: 0; }
-
-        .toggle-sidebar {
-            position: fixed;
-            right: 20px;
-            top: 20px;
-            background: var(--accent);
+        /* شريط التحكم */
+        .header {
+            background: var(--primary);
             color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            z-index: 1001;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* قائمة الخدمات */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .price {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin: 1rem 0;
         }
 
         /* قائمة الموظفين */
-        .employee-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 30px;
-        }
-
-        .employee-item {
-            padding: 15px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.1);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.2s;
-            color: white;
-        }
-
-        .employee-item:hover {
-            background: var(--accent);
-            transform: translateX(-10px);
-        }
-
-        /* الواجهة الرئيسية */
-        .dashboard {
-            margin-right: 20px;
+        .employees-modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 15px rgba(0,0,0,0.1);
+            padding: 1rem;
+            transform: translateX(100%);
             transition: 0.3s;
         }
 
-        .current-employee {
-            background: var(--secondary);
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .modal-open { transform: translateX(0); }
+
+        .employee-card {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* نموذج الخدمة */
+        .service-form {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .client-input {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
         }
     </style>
 </head>
 <body>
-    <button class="toggle-sidebar" onclick="toggleSidebar()">☰ إدارة الموظفين</button>
+    <header class="header">
+        <h1>صالون النخبة</h1>
+        <button onclick="toggleEmployees()">👥 الموظفين</button>
+    </header>
 
-    <div class="employees-sidebar">
-        <h3 style="color: white; border-bottom: 2px solid var(--accent); padding-bottom: 10px;">
-            فريق العمل
-            <button onclick="addEmployee()" style="float: left; background: none; border: none; color: white; cursor: pointer;">+</button>
-        </h3>
-        
-        <ul class="employee-list" id="employeeList">
-            <!-- يتم ملؤها بالجافاسكريبت -->
-        </ul>
+    <div class="services-grid" id="servicesGrid">
+        <!-- الخدمات تُملأ بالجافاسكريبت -->
     </div>
 
-    <div class="dashboard">
-        <div class="current-employee">
-            <h2>الموظف الحالي: <span id="currentEmployee">حمزة</span></h2>
-        </div>
+    <div class="employees-modal" id="employeesModal">
+        <h3>فريق العمل</h3>
+        <div id="employeesList"></div>
+    </div>
 
-        <!-- باقي عناصر لوحة التحكم -->
+    <div class="service-form" id="serviceForm" style="display: none;">
+        <h2>تسجيل الخدمة</h2>
+        <input type="text" class="client-input" placeholder="اسم الزبون">
+        <input type="tel" class="client-input" placeholder="رقم الهاتف">
+        <div id="selectedServices"></div>
+        <button onclick="confirmService()">تأكيد الخدمة</button>
     </div>
 
     <script>
-        // بيانات الموظفين الأولية
-        let employees = ['حمزة', 'يوسف', 'أحمد'];
-        let activeEmployee = employees[0];
+        // بيانات النظام
+        const employees = ['حمزة', 'يوسف', 'ليلى'];
+        const services = [
+            { id: 1, name: 'قص شعر رجالي', price: 50 },
+            { id: 2, name: 'صبغ شعر', price: 120 },
+            { id: 3, name: 'تنظيف بشرة', price: 80 }
+        ];
 
-        // عرض قائمة الموظفين
-        function renderEmployees() {
-            const list = document.getElementById('employeeList');
-            list.innerHTML = employees.map(emp => `
-                <li class="employee-item" 
-                    onclick="switchEmployee('${emp}')"
-                    oncontextmenu="manageEmployee(event, '${emp}')">
-                    ${emp}
-                </li>
+        // تهيئة الخدمات
+        function initServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = services.map(service => `
+                <div class="service-card">
+                    <h3>${service.name}</h3>
+                    <p class="price">${service.price} درهم</p>
+                    <button onclick="selectService(${service.id})">اختيار الخدمة</button>
+                </div>
             `).join('');
         }
 
-        // تبديل الموظف النشط
-        function switchEmployee(emp) {
-            activeEmployee = emp;
-            document.getElementById('currentEmployee').textContent = emp;
-            toggleSidebar();
-            // هنا يمكنك إضافة كود لتحميل بيانات الموظف
+        // إدارة الموظفين
+        function toggleEmployees() {
+            document.getElementById('employeesModal').classList.toggle('modal-open');
         }
 
-        // إدارة الموظفين (زر + بالماوس الأيمن)
-        function addEmployee() {
-            const newEmp = prompt('أدخل اسم الموظف الجديد:');
-            if(newEmp) {
-                employees.push(newEmp);
-                renderEmployees();
-            }
+        // اختيار الخدمة
+        let selectedService = null;
+        function selectService(serviceId) {
+            selectedService = services.find(s => s.id === serviceId);
+            toggleEmployees();
+            renderEmployees();
         }
 
-        function manageEmployee(e, emp) {
-            e.preventDefault();
-            if(confirm(`هل تريد حذف ${emp}؟`)) {
-                employees = employees.filter(e => e !== emp);
-                renderEmployees();
-            }
-        }
-
-        // فتح/إغلاق القائمة
-        function toggleSidebar() {
-            document.querySelector('.employees-sidebar').classList.toggle('sidebar-open');
+        // تأكيد الخدمة
+        function confirmService() {
+            const clientName = document.querySelector('.client-input').value;
+            // حفظ البيانات وإرسالها للخادم
+            alert('تم تسجيل الخدمة بنجاح!');
         }
 
         // التهيئة الأولية
-        renderEmployees();
+        initServices();
     </script>
 </body>
 </html>
