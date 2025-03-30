@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدارة صالون الحلاقة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <style>
         /* تصميمات عامة */
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Cairo', sans-serif;
             margin: 0;
             padding: 0;
             background: #1a1a1a;
@@ -16,13 +16,16 @@
             color: #fff;
         }
 
-        /* خلفية الأيموجي المتحركة */
+        /* خلفية الأيموجي بـ Grid */
         .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
             pointer-events: none;
             z-index: -1;
             background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
@@ -30,11 +33,25 @@
 
         /* أيموجي الخلفية */
         .emoji {
-            position: absolute;
-            font-size: 4em;
-            animation: float 8s infinite ease-in-out;
-            opacity: 0.8;
+            font-size: 3em;
             color: #ff9f43;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        /* الأيموجي الدوران في المركز */
+        .central-emoji {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8em;
+            color: #ff9f43;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         @keyframes float {
@@ -56,7 +73,7 @@
             text-align: center;
         }
 
-        /* إخفاء رمز الكود */
+        /* إدخال الكود */
         input[type="password"] {
             width: 100%;
             padding: 15px;
@@ -65,7 +82,7 @@
             font-size: 18px;
             transition: all 0.3s ease;
             text-indent: 15px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Cairo', sans-serif;
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff9f43' d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 12c-2.67 0-8-4-8-9.5c0-4.25 6.75-7.5 8-7.5s8 3.25 8 7.5c0 5.5-5.33 9.5-8 9.5z'/%3E%3C/svg%3E") no-repeat 10px center;
             background-size: 25px;
         }
@@ -124,33 +141,27 @@
             color: #ff9f43;
             animation: spin 1.5s linear infinite;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
-    <!-- خلفية الأيموجي المتحركة -->
+    <!-- خلفية الأيموجي بـ Grid -->
     <div class="background">
-        <!-- حلاقة -->
-        <span class="emoji" style="top: 10%; left: 5%; animation-delay: -2s;">💇</span>
-        <!-- مقص -->
-        <span class="emoji" style="top: 30%; right: 10%; animation-delay: -1s;">✂️</span>
-        <!-- باربر بول -->
-        <span class="emoji" style="bottom: 15%; left: 20%; animation-delay: -3s;">💈</span>
-        <!-- قمر -->
-        <span class="emoji" style="top: 60%; right: 30%; animation-delay: -4s;">🌕</span>
-        <!-- شمس -->
-        <span class="emoji" style="bottom: 5%; left: 40%; animation-delay: -5s;">🌝</span>
-        <!-- صوت -->
-        <span class="emoji" style="top: 50%; right: 15%; animation-delay: -6s;">🗣️</span>
+        <!-- أيموجي الخلفية -->
+        <span class="emoji" style="grid-area: 1 / 1;">💇</span>
+        <span class="emoji" style="grid-area: 1 / 5;">✂️</span>
+        <span class="emoji" style="grid-area: 3 / 3;">💈</span>
+        <span class="emoji" style="grid-area: 5 / 1;">🌕</span>
+        <span class="emoji" style="grid-area: 5 / 5;">🌝</span>
+        <span class="emoji" style="grid-area: 2 / 4;">✨</span>
+        <span class="emoji" style="grid-area: 4 / 2;">🍃</span>
     </div>
+
+    <!-- الأيموجي الدوران في المنتصف -->
+    <div class="central-emoji">💈</div>
 
     <!-- شاشة الدخول -->
     <div class="login-container">
-        <h2 style="color: #ff9f43; margin-bottom: 30px;">إدارة صالون الحلاقة</h2>
+        <h2 style="color: #ff9f43; margin-bottom: 30px; font-family: 'Cairo', sans-serif;">إدارة صالون الحلاقة</h2>
         
         <div class="form-group">
             <input type="password" id="accessCode" placeholder="••••••••" autofocus>
