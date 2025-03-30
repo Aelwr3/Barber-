@@ -116,15 +116,18 @@
             transform: translate(-50%, -50%);
             width: 60px;
             height: 60px;
-            border: 4px solid rgba(255, 159, 67, 0.3);
-            border-top-color: #ff9f43;
-            border-radius: 50%;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader svg {
+            width: 100%;
+            height: 100%;
+            fill: #ff9f43;
         }
     </style>
 </head>
@@ -135,8 +138,8 @@
         <img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/2821/2821012.svg" 
              style="top: 10%; left: 5%; transform: rotate(15deg); width: 120px;">
         
-        <!-- أيقونة راية الصالون -->
-        <img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/10033/10033281.svg" 
+        <!-- أيقونة باربر بول -->
+        <img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/6703/6703553.svg" 
              style="top: 30%; right: 10%; transform: rotate(-15deg); width: 150px;">
         
         <!-- أيقونة تصفيف الشعر -->
@@ -151,15 +154,20 @@
     <!-- شاشة الدخول -->
     <div class="login-container">
         <!-- اللوجو من الرابط المحدد -->
-        <div class="logo" 
-             style="background-image: url('https://www.flaticon.com/svg/static/icons/svg/1995/1995573.svg');"></div>
+        <div class="logo"></div>
         
         <div class="form-group">
             <input type="text" id="accessCode" placeholder="أدخل كود الدخول" autofocus>
             <div class="error" id="errorText"></div>
         </div>
         <button onclick="login()">تسجيل الدخول</button>
-        <div class="loader" id="loader"></div>
+        <div class="loader" id="loader">
+            <!-- أيقونة التحميل الدورانية -->
+            <svg viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="20" stroke="#ff9f43" stroke-width="3" fill="transparent"></circle>
+                <path d="M 25 25 L 30 25" stroke="#ff9f43" stroke-width="3" transform="rotate(0 25 25)"></path>
+            </svg>
+        </div>
     </div>
 
     <script>
