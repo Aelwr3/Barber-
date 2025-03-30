@@ -1,120 +1,196 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدارة صالون الحلاقة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* تصميمات عامة */
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1a1a1a, #333);
+            background: #1a1a1a;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }.background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-    }
+        }
 
-    .icon {
-        position: absolute;
-        animation: float 6s infinite ease-in-out;
-        opacity: 0.5;
-    }
+        /* الخلفية المتحركة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
 
-    @keyframes float {
-        0% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
-        100% { transform: translateY(0); }
-    }
+        .icon {
+            position: absolute;
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.7;
+        }
 
-    .login-container {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        text-align: center;
-        width: 350px;
-    }
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(20px, -30px) rotate(10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
 
-    .logo {
-        width: 120px;
-        height: 120px;
-        background: url('https://upload.wikimedia.org/wikipedia/commons/3/3b/Barber_Pole.svg') no-repeat center;
-        background-size: contain;
-        margin: 0 auto 20px;
-    }
+        /* تصميم شاشة الدخول */
+        .login-container {
+            max-width: 450px;
+            margin: 15% auto;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
 
-    input {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        font-size: 16px;
-        text-align: center;
-    }
+        .logo {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto -40px;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #ff9f43;
+            background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MTIgNjEyIj48cmVjdCB3aWR0aD0iNjEyIiBoZWlnaHQ9IjYxMiIgZmlsbD0iI2ZmZiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYxMiAwKSI+PHBhdGggZD0iTSAyMjYuNSA2MTIgTCAzMDAgNDYwLjUgTCAxNTEuNSA0NjAgTCAxNTEuNSAxNTEuNSIgZmlsbD0iI2ZmOWY0MyIvPjwvZz48L3N2Zz4=") no-repeat center;
+            background-size: 100%;
+        }
 
-    button {
-        width: 100%;
-        padding: 12px;
-        background: linear-gradient(45deg, #ff9f43, #ff6b35);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+        .form-group {
+            margin-bottom: 30px;
+        }
 
-    .loader {
-        display: none;
-        width: 50px;
-        height: 50px;
-        background: url('https://upload.wikimedia.org/wikipedia/commons/e/e5/Barber_shop_icon.svg') no-repeat center;
-        background-size: contain;
-        animation: spin 1s linear infinite;
-        margin: 10px auto;
-    }
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+        }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-</style>
+        input[type="text"]:focus {
+            border-color: #ff9f43;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 159, 67, 0.5);
+        }
 
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff9f43, #ff6b35);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(255, 159, 67, 0.3);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff9f43, #ff6b35);
+            transform: translateY(-2px);
+        }
+
+        /* رسائل الخطأ */
+        .error {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .error.active {
+            opacity: 1;
+        }
+
+        /* تأثير التحميل */
+        .loader {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+        }
+
+        .loader svg {
+            width: 100%;
+            height: 100%;
+            animation: rotate 1.5s linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
+    <!-- الخلفية المتحركة -->
     <div class="background">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razor.svg" style="top: 10%; left: 5%; width: 80px;">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Barbershop.svg" style="top: 30%; right: 10%; width: 100px;">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Barber_Pole.svg" style="bottom: 20%; left: 15%; width: 90px;">
-        <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Hairdresser.svg" style="top: 50%; right: 30%; width: 100px;">
+        <!-- أيقونة المقص -->
+        <img class="icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MTIgNjEyIj48cmVjdCB3aWR0aD0iNjEyIiBoZWlnaHQ9IjYxMiIgZmlsbD0iI2ZmZiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYxMiAwKSI+PHBhdGggZD0iTSAyMjYuNSA2MTIgTCAzMDAgNDYwLjUgTCAxNTEuNSA0NjAgTCAxNTEuNSAxNTEuNSIgZmlsbD0iI2ZmOWY0MyIvPjwvZz48L3N2Zz4=" 
+             style="top: 10%; left: 5%; transform: rotate(15deg); width: 140px;">
+        
+        <!-- أيقونة باربر بول -->
+        <img class="icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MTIgNjEyIj48cmVjdCB3aWR0aD0iNjEyIiBoZWlnaHQ9IjYxMiIgZmlsbD0iI2ZmZiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYxMiAwKSI+PHBhdGggZD0iTSAyMjYuNSA2MTIgTCAzMDAgNDYwLjUgTCAxNTEuNSA0NjAgTCAxNTEuNSAxNTEuNSIgZmlsbD0iI2ZmOWY0MyIvPjwvZz48L3N2Zz4=" 
+             style="top: 30%; right: 10%; transform: rotate(-15deg); width: 180px;">
+        
+        <!-- أيقونة تصفيف الشعر -->
+        <img class="icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MTIgNjEyIj48cmVjdCB3aWR0aD0iNjEyIiBoZWlnaHQ9IjYxMiIgZmlsbD0iI2ZmZiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYxMiAwKSI+PHBhdGggZD0iTSAyMjYuNSA2MTIgTCAzMDAgNDYwLjUgTCAxNTEuNSA0NjAgTCAxNTEuNSAxNTEuNSIgZmlsbD0iI2ZmOWY0MyIvPjwvZz48L3N2Zz4=" 
+             style="bottom: 15%; left: 20%; width: 120px;">
+        
+        <!-- أيقونة أدوات الحلاقة -->
+        <img class="icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MTIgNjEyIj48cmVjdCB3aWR0aD0iNjEyIiBoZWlnaHQ9IjYxMiIgZmlsbD0iI2ZmZiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYxMiAwKSI+PHBhdGggZD0iTSAyMjYuNSA2MTIgTCAzMDAgNDYwLjUgTCAxNTEuNSA0NjAgTCAxNTEuNSAxNTEuNSIgZmlsbD0iI2ZmOWY0MyIvPjwvZz48L3N2Zz4=" 
+             style="top: 60%; right: 30%; transform: rotate(30deg); width: 160px;">
     </div>
+
+    <!-- شاشة الدخول -->
     <div class="login-container">
+        <!-- اللوجو (أيقونة مقص) -->
         <div class="logo"></div>
-        <input type="text" id="accessCode" placeholder="أدخل كود الدخول">
+        
+        <div class="form-group">
+            <input type="text" id="accessCode" placeholder="أدخل كود الدخول" autofocus>
+            <div class="error" id="errorText"></div>
+        </div>
         <button onclick="login()">تسجيل الدخول</button>
-        <div class="loader" id="loader"></div>
+        <div class="loader" id="loader">
+            <svg viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="20" stroke="#ff9f43" stroke-width="3" fill="transparent"></circle>
+                <path d="M 25 25 L 30 25" stroke="#ff9f43" stroke-width="3" transform="rotate(0 25 25)"></path>
+            </svg>
+        </div>
     </div>
+
     <script>
         function login() {
             const code = document.getElementById('accessCode').value;
+            const error = document.getElementById('errorText');
             const loader = document.getElementById('loader');
+
+            error.classList.remove('active');
+
             if (code === '20250405') {
                 loader.style.display = 'block';
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 1500);
+            } else {
+                error.textContent = 'كود الدخول غير صحيح. يُرجى المحاولة مجددًا.';
+                error.classList.add('active');
             }
         }
     </script>
