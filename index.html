@@ -1,107 +1,171 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - إدارة الصالون</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap">
+    <title>إدارة صالون الحلاقة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* تصميمات عامة */
         body {
-            background: linear-gradient(to bottom, #1a1a2e, #16213e);
-            color: white;
-            font-family: 'Amiri', serif;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
             overflow: hidden;
-            position: relative;
         }
-        .container {
+
+        /* الخلفية المتحركة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .icon {
+            position: absolute;
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -20px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* تصميم شاشة الدخول */
+        .login-container {
+            max-width: 400px;
+            margin: 15% auto;
+            padding: 40px;
             background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            width: 350px;
-            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
         }
+
         .logo {
-            width: 80px;
-            height: 80px;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #fff;
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
-        input {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            text-align: center;
-            font-family: 'Amiri', serif;
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
         }
-        .btn {
-            background: #ffcc00;
-            color: #333;
+
+        input[type="text"]:focus {
+            border-color: #ff9f43;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #ff9f43;
+            color: #fff;
             border: none;
-            padding: 10px 20px;
-            font-size: 18px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
-        .btn:hover {
-            background: #ffdd44;
+
+        button:hover {
+            background: #ff8518;
         }
-        .loading-icon {
+
+        /* رسائل الخطأ */
+        .error {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error.active {
+            opacity: 1;
+        }
+
+        /* تأثير التحميل */
+        .loader {
             display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 50px;
             height: 50px;
-            margin-top: 15px;
+            border: 3px solid rgba(255, 159, 67, 0.3);
+            border-top-color: #ff9f43;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .bg-icons img {
-            position: absolute;
-            width: 80px;
-            opacity: 0.1;
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="bg-icons">
-        <img src="https://www.flaticon.com/free-icon/razor_2821012" style="top:10%; left:5%;">
-        <img src="https://www.flaticon.com/free-icon/shop_10033281" style="top:30%; right:10%;">
-        <img src="https://www.flaticon.com/free-icon/barber-pole_6703553" style="bottom:20%; left:15%;">
-        <img src="https://www.flaticon.com/free-icon/hairdresser_3397638" style="top:50%; right:30%;">
-        <img src="https://www.flaticon.com/free-icon/barber_531190" style="bottom:10%; right:10%;">
+    <!-- الخلفية المتحركة -->
+    <div class="background">
+        <img class="icon" src="icons/razor.png" style="top: 10%; left: 5%; transform: rotate(15deg); width: 100px;">
+        <img class="icon" src="icons/barber-pole.png" style="top: 30%; right: 10%; transform: rotate(-15deg); width: 120px;">
+        <img class="icon" src="icons/hairdresser.png" style="bottom: 15%; left: 20%; width: 80px;">
+        <img class="icon" src="icons/barber-accessories.png" style="top: 60%; right: 30%; transform: rotate(30deg); width: 100px;">
     </div>
-    <div class="container">
-        <img src="https://www.flaticon.com/free-icon/barber_1995573" class="logo" alt="صالون الحلاقة">
-        <h2>تسجيل الدخول</h2>
-        <input type="password" id="codeInput" placeholder="أدخل الكود السري">
-        <button class="btn" onclick="checkCode()">دخول</button>
-        <img src="https://www.flaticon.com/free-icon/razor_2241588" class="loading-icon" id="loadingIcon" alt="تحميل">
-        <p id="message" style="color: red;"></p>
-    </div>
-    <script>
-        function checkCode() {
-            const code = document.getElementById('codeInput').value;
-            const loadingIcon = document.getElementById('loadingIcon');
-            const message = document.getElementById('message');if (code === '20250405') {
-            message.textContent = '';
-            loadingIcon.style.display = 'block';
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 2000);
-        } else {
-            message.textContent = 'كود خاطئ، حاول مرة أخرى';
-        }
-    }
-</script>
 
+    <!-- شاشة الدخول -->
+    <div class="login-container">
+        <img class="logo" src="icons/barber-logo.png" alt="Logo">
+        <div class="form-group">
+            <input type="text" id="accessCode" placeholder="أدخل كود الدخول" autofocus>
+            <div class="error" id="errorText"></div>
+        </div>
+        <button onclick="login()">تسجيل الدخول</button>
+        <div class="loader" id="loader"></div>
+    </div>
+
+    <script>
+        function login() {
+            const code = document.getElementById('accessCode').value;
+            const error = document.getElementById('errorText');
+            const loader = document.getElementById('loader');
+
+            // إخفاء الرسالة السابقة
+            error.classList.remove('active');
+
+            if (code === '20250405') {
+                // عرض تأثير التحميل
+                loader.style.display = 'block';
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } else {
+                error.textContent = 'كود الدخول غير صحيح. يُرجى المحاولة مجددًا.';
+                error.classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
