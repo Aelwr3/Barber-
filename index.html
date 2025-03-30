@@ -1,227 +1,45 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدارة الصالون</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;500;700&display=swap');
-        
-        :root {
-            --primary: #0a1a2f;
-            --secondary: #12263a;
-            --accent: #c5a47e;
-            --text: #e0e0e0;
-            --error: #ff4444;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: grid;
-            place-items: center;
-            overflow: hidden;
-        }
-
-        /* نظام Grid للخلفية */
-        .background-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0.08;
-            pointer-events: none;
-        }
-
-        .grid-icon {
-            width: 50px;
-            filter: grayscale(1) brightness(2);
-            animation: float 8s infinite ease-in-out;
-            justify-self: center;
-            align-self: center;
-        }
-
-        /* توزيع الأيقونات بدقة */
-        .grid-icon:nth-child(1) { grid-area: 2 / 2; }
-        .grid-icon:nth-child(2) { grid-area: 3 / 5; }
-        .grid-icon:nth-child(3) { grid-area: 5 / 8; }
-        .grid-icon:nth-child(4) { grid-area: 6 / 11; }
-        .grid-icon:nth-child(5) { grid-area: 4 / 3; }
-        .grid-icon:nth-child(6) { grid-area: 7 / 6; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        /* نظام Grid للواجهة الرئيسية */
-        .auth-container {
-            display: grid;
-            grid-template-areas:
-                "logo"
-                "title"
-                "input"
-                "message"
-                "button";
-            grid-gap: 1.5rem;
-            position: relative;
-            z-index: 1;
-            background: rgba(18, 38, 58, 0.95);
-            width: 90%;
-            max-width: 450px;
-            padding: 2.5rem;
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(197, 164, 126, 0.2);
-            box-shadow: 0 0 40px rgba(0,0,0,0.4);
-        }
-
-        .brand-logo {
-            grid-area: logo;
-            width: 120px;
-            margin: 0 auto;
-            filter: drop-shadow(0 0 12px rgba(197, 164, 126, 0.3));
-        }
-
-        .auth-title {
-            grid-area: title;
-            font-family: 'Amiri', serif;
-            text-align: center;
-            color: var(--accent);
-            font-size: 2rem;
-            margin: 0;
-        }
-
-        .pin-input {
-            grid-area: input;
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255,255,255,0.05);
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1.1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .status-message {
-            grid-area: message;
-            text-align: center;
-            padding: 1rem;
-            border-radius: 8px;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .submit-btn {
-            grid-area: button;
-            font-family: 'Amiri', serif;
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--accent), #b08f69);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    <title>تسجيل الدخول - إدارة الصالون</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 <body>
-    <div class="background-grid">
-        <img src="https://cdn-icons-png.flaticon.com/512/2241/2241588.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821012.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/6703/6703553.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/3397/3397638.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/5311/5311903.png" class="grid-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/6437/6437026.png" class="grid-icon">
-    </div>
-
-    <div class="auth-container">
-        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995573.png" 
-             class="brand-logo" 
-             alt="شعار النظام">
-
-        <h1 class="auth-title">نظام الإدارة الاحترافي</h1>
-
-        <input type="password" 
-               class="pin-input" 
-               placeholder="أدخل الرمز السري"
-               id="systemPin"
-               maxlength="8">
-
-        <div class="status-message" id="statusMessage"></div>
-
-        <button class="submit-btn" onclick="verifyAccess()">
-            الدخول للنظام
-        </button>
-    </div>
-
-    <script>
-        const SYSTEM_CODE = '20250405';
-        const SECRET_KEY = 'SalonPro@2024';
-
-        function createSecureHash(input) {
-            const salt = btoa(navigator.platform + screen.width);
-            const mixed = input + SECRET_KEY + salt;
-            let hash = '';
-            
-            for(let i = 0; i < mixed.length; i++) {
-                hash += String.fromCharCode(
-                    mixed.charCodeAt(i) ^ (i % 255),
-                    mixed.charCodeAt((i + 5) % mixed.length)
-                );
-            }
-            
-            return btoa(hash).split('').reverse().join('');
+    <div class="login-container">
+        <h1>مرحبًا بك في إدارة الصالون</h1>
+        <img src="https://www.flaticon.com/free-icon/barber_1995573" alt="شعار الصالون" class="logo">
+        <input type="text" id="accessCode" placeholder="أدخل كود الدخول">
+        <p id="message" class="message"></p>
+        <button onclick="checkAccessCode()">دخول</button>
+    </div><script>
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    
+    function checkAccessCode() {
+        const code = document.getElementById('accessCode').value;
+        const message = document.getElementById('message');
+        if (code === "20250405") {
+            message.textContent = "تم الدخول بنجاح!";
+            message.style.color = "green";
+            setTimeout(() => window.location.href = "dashboard.html", 1000);
+        } else {
+            message.textContent = "كود خاطئ، حاول مرة أخرى.";
+            message.style.color = "red";
         }
+    }
+</script>
 
-        const validHash = createSecureHash(SYSTEM_CODE);
-
-        function showMessage(text, isSuccess) {
-            const msgElement = document.getElementById('statusMessage');
-            msgElement.textContent = text;
-            msgElement.className = `status-message ${isSuccess ? 'success' : 'error'}`;
-            msgElement.style.display = 'block';
-        }
-
-        function verifyAccess() {
-            const input = document.getElementById('systemPin').value;
-            
-            if(!input) {
-                showMessage('يرجى إدخال الرمز السري', false);
-                return;
-            }
-
-            const hash = createSecureHash(input);
-            
-            if(hash === validHash) {
-                showMessage('✅ تم المصادقة بنجاح، جاري التوجيه...', true);
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-            } else {
-                showMessage('❌ الرمز السري غير صحيح', false);
-                const pinField = document.getElementById('systemPin');
-                pinField.style.borderColor = '#ff4444';
-                setTimeout(() => {
-                    pinField.style.borderColor = '#c5a47e';
-                }, 1000);
-            }
-        }
-    </script>
 </body>
 </html>
