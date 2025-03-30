@@ -3,40 +3,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - إدارة الصالون</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1a1a2e, #16213e);
+            color: white;
+            font-family: 'Amiri', serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            width: 350px;
+            backdrop-filter: blur(10px);
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            text-align: center;
+            font-family: 'Amiri', serif;
+        }
+        .btn {
+            background: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #ffdd44;
+        }
+        .loading-icon {
+            display: none;
+            width: 50px;
+            height: 50px;
+            margin-top: 15px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .bg-icons img {
+            position: absolute;
+            width: 80px;
+            opacity: 0.1;
+        }
+    </style>
 </head>
 <body>
-    <div class="login-container">
-        <h1>مرحبًا بك في إدارة الصالون</h1>
-        <img src="https://www.flaticon.com/free-icon/barber_1995573" alt="شعار الصالون" class="logo">
-        <input type="text" id="accessCode" placeholder="أدخل كود الدخول">
-        <p id="message" class="message"></p>
-        <button onclick="checkAccessCode()">دخول</button>
-    </div><script>
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    
-    function checkAccessCode() {
-        const code = document.getElementById('accessCode').value;
-        const message = document.getElementById('message');
-        if (code === "20250405") {
-            message.textContent = "تم الدخول بنجاح!";
-            message.style.color = "green";
-            setTimeout(() => window.location.href = "dashboard.html", 1000);
+    <div class="bg-icons">
+        <img src="https://www.flaticon.com/free-icon/razor_2821012" style="top:10%; left:5%;">
+        <img src="https://www.flaticon.com/free-icon/shop_10033281" style="top:30%; right:10%;">
+        <img src="https://www.flaticon.com/free-icon/barber-pole_6703553" style="bottom:20%; left:15%;">
+        <img src="https://www.flaticon.com/free-icon/hairdresser_3397638" style="top:50%; right:30%;">
+        <img src="https://www.flaticon.com/free-icon/barber_531190" style="bottom:10%; right:10%;">
+    </div>
+    <div class="container">
+        <img src="https://www.flaticon.com/free-icon/barber_1995573" class="logo" alt="صالون الحلاقة">
+        <h2>تسجيل الدخول</h2>
+        <input type="password" id="codeInput" placeholder="أدخل الكود السري">
+        <button class="btn" onclick="checkCode()">دخول</button>
+        <img src="https://www.flaticon.com/free-icon/razor_2241588" class="loading-icon" id="loadingIcon" alt="تحميل">
+        <p id="message" style="color: red;"></p>
+    </div>
+    <script>
+        function checkCode() {
+            const code = document.getElementById('codeInput').value;
+            const loadingIcon = document.getElementById('loadingIcon');
+            const message = document.getElementById('message');if (code === '20250405') {
+            message.textContent = '';
+            loadingIcon.style.display = 'block';
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2000);
         } else {
-            message.textContent = "كود خاطئ، حاول مرة أخرى.";
-            message.style.color = "red";
+            message.textContent = 'كود خاطئ، حاول مرة أخرى';
         }
     }
 </script>
