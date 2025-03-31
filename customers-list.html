@@ -1,256 +1,180 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>عرض الزبائن</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-/* نسخ التصميمات الأساسية من dashboard.html */
-body {
-font-family: 'Cairo', sans-serif;
-margin: 0;
-padding: 0;
-background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-color: #fff;
-min-height: 100vh;
-overflow-x: hidden;
-touch-action: pan-y;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>عرض الزبائن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* تحسينات عامة */
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
 
-/* الأيقونة الرئيسية */
-.menu-toggle {
-position: fixed;
-top: 20px;
-right: 20px;
-width: 50px;
-height: 50px;
-background: #ff9f43;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
-transition: all 0.3s ease;
-z-index: 1000;
-}
+        /* إصلاح خلفية الصفحة */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
 
-/* القائمة المخفية */
-.sidebar {
-position: fixed;
-top: 0;
-right: -400px;
-width: 100%;
-max-width: 300px;
-height: 100%;
-background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
-padding: 20px;
-transition: all 0.3s ease;
-box-shadow: 0 0 30px rgba(255, 159, 67, 0.3);
-z-index: 999;
-}
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-/* باقي التصميمات (كopi من dashboard.html مع تعديلات) */
-.main-content {
-padding: 40px 20px;
-height: 100%;
-display: flex;
-flex-direction: column;
-align-items: center;
-transition: all 0.3s ease;
-}
+        /* تحسين القائمة الجانبية */
+        .sidebar {
+            right: -100%;
+            max-width: 100%;
+        }
 
-/* مربع البحث */
-.search-bar {
-width: 100%;
-max-width: 600px;
-margin-bottom: 30px;
-position: relative;
-}
+        .sidebar.show {
+            right: 0;
+        }
 
-.search-bar input {
-width: 100%;
-padding: 15px;
-background: rgba(255, 255, 255, 0.1);
-border: none;
-border-radius: 20px;
-color: #fff;
-font-size: 16px;
-}
+        /* تحسين مربع البحث */
+        .search-bar i {
+            pointer-events: none;
+        }
 
-.search-bar i {
-position: absolute;
-top: 50%;
-right: 20px;
-transform: translateY(-50%);
-font-size: 24px;
-color: #ff9f43;
-}
+        /* تحسين بطاقات الزبائن */
+        .customer-card {
+            position: relative;
+            overflow: hidden;
+        }
 
-/* قائمة الزبائن */
-.customers-list {
-width: 100%;
-max-width: 1200px;
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 20px;
-}
+        .customer-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 159, 67, 0.1);
+            z-index: -1;
+        }
 
-.customer-card {
-background: rgba(255, 255, 255, 0.1);
-padding: 25px;
-border-radius: 20px;
-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-transition: all 0.3s ease;
-text-align: center;
-}
-
-.customer-card:hover {
-transform: translateY(-5px);
-box-shadow: 0 8px 30px rgba(255, 159, 67, 0.4);
-}
-
-.customer-card h3 {
-color: #ff9f43;
-margin-bottom: 15px;
-}
-
-.customer-card p {
-color: #fff;
-margin: 10px 0;
-}
-
-/* أزرار التعديل والحذف */
-.customer-actions {
-margin-top: 20px;
-display: flex;
-gap: 10px;
-}
-
-.customer-actions button {
-padding: 8px 15px;
-background: #ff9f43;
-color: #1a1a1a;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-transition: all 0.3s ease;
-}
-
-.customer-actions button:hover {
-background: #ff6b35;
-}
-
-/* تصميم متجاوب */
-@media (max-width: 768px) {
-.search-bar input {
-padding: 12px;
-font-size: 14px;
-}
-
-.customer-card {
-padding: 20px;
-min-width: 100%;
-}
-
-.customer-card h3 {
-font-size: 18px;
-}
-}
-</style>
+        /* رسائل عدم وجود بيانات */
+        .no-data {
+            text-align: center;
+            color: #ff9f43;
+            padding: 20px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-<!-- الخلفية -->
-<div class="background"></div>
+    <!-- الخلفية -->
+    <div class="background"></div>
 
-<!-- الأيقونة الرئيسية -->
-<div class="menu-toggle" onclick="toggleMenu()">
-<span>☰</span>
-</div>
+    <!-- الأيقونة الرئيسية -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <span>☰</span>
+    </div>
 
-<!-- القائمة المخفية -->
-<div class="sidebar" id="sidebar">
-<span class="close-btn" onclick="toggleMenu()">×</span>
-<h2>إدارة صالون الحلاقة</h2>
-<a href="dashboard.html">لوحة التحكم</a>
-<a href="customer-selection.html">إضافة زبون</a>
-<a href="services.html">إدارة الخدمات</a>
-<a href="invoices.html">إدارة الفواتير</a>
-<a href="invoice-search.html">بحث عن فاتورة</a>
-<a href="index.html">تسجيل خروج</a>
-</div>
+    <!-- القائمة المخفية -->
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleMenu()">×</span>
+        <h2>إدارة صالون الحلاقة</h2>
+        <a href="dashboard.html">لوحة التحكم</a>
+        <a href="customer-selection.html">إضافة زبون</a>
+        <a href="services.html">إدارة الخدمات</a>
+        <a href="invoices.html">إدارة الفواتير</a>
+        <a href="invoice-search.html">بحث عن فاتورة</a>
+        <a href="index.html">تسجيل خروج</a>
+    </div>
 
-<!-- الجزء الرئيسي -->
-<div class="main-content">
-<h1 style="color: #ff9f43; text-align: center; margin-bottom: 40px;">قائمة الزبائن</h1>
+    <!-- الجزء الرئيسي -->
+    <div class="main-content">
+        <h1 style="color: #ff9f43; text-align: center; margin-bottom: 40px;">قائمة الزبائن</h1>
 
-<!-- مربع البحث -->
-<div class="search-bar">
-<input type="text" id="searchInput" placeholder="ابحث باسم أو رقم هاتف...">
-<i>🔍</i>
-</div>
+        <!-- مربع البحث -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="ابحث باسم أو رقم هاتف...">
+            <i>🔍</i>
+        </div>
 
-<!-- قائمة الزبائن -->
-<div class="customers-list" id="customersList"></div>
-</div>
+        <!-- قائمة الزبائن -->
+        <div class="customers-list" id="customersList"></div>
+    </div>
 
-<script>
-// تفعيل القائمة المخفية (نفس الكود في dashboard.html)
-function toggleMenu() {
-const sidebar = document.getElementById('sidebar');
-sidebar.classList.toggle('show');
-}
+    <script>
+        // تحسينات JavaScript
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
 
-// دالة عرض الزبائن
-function renderCustomers(customers) {
-const list = document.getElementById('customersList');
-list.innerHTML = customers.map(cust => `
-<div class="customer-card">
-<h3>${cust.name}</h3>
-<p>رقم الهاتف: ${cust.phone}</p>
-<div class="customer-actions">
-<button onclick="editCustomer(${cust.id})">تعديل</button>
-<button onclick="deleteCustomer(${cust.id})">حذف</button>
-</div>
-</div>
-`).join('');
-}
+        function renderCustomers(customers) {
+            const list = document.getElementById('customersList');
+            
+            if (!customers || customers.length === 0) {
+                list.innerHTML = '<div class="no-data">لا يوجد زبائن مسجلين حالياً</div>';
+                return;
+            }
 
-// عرض الزبائن عند تحميل الصفحة
-window.onload = function() {
-const customers = JSON.parse(localStorage.getItem('customers')) || [];
-renderCustomers(customers);
-};
+            list.innerHTML = customers.map(cust => `
+                <div class="customer-card">
+                    <h3>${cust.name}</h3>
+                    <p>رقم الهاتف: ${cust.phone}</p>
+                    <div class="customer-actions">
+                        <button onclick="editCustomer('${cust.id}')">تعديل</button>
+                        <button onclick="deleteCustomer('${cust.id}')">حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-// مربع البحث
-document.getElementById('searchInput').addEventListener('input', function(e) {
-const term = e.target.value.toLowerCase();
-const filtered = (JSON.parse(localStorage.getItem('customers')) || []).filter(cust =>
-cust.name.toLowerCase().includes(term) ||
-cust.phone.includes(term)
-);
-renderCustomers(filtered);
-});
+        function loadCustomers() {
+            try {
+                return JSON.parse(localStorage.getItem('customers')) || [];
+            } catch (error) {
+                console.error('Error loading customers:', error);
+                return [];
+            }
+        }
 
-// حذف زبون
-function deleteCustomer(id) {
-const customers = JSON.parse(localStorage.getItem('customers')) || [];
-const newCustomers = customers.filter(cust => cust.id !== id);
-localStorage.setItem('customers', JSON.stringify(newCustomers));
-renderCustomers(newCustomers);
-}
+        function deleteCustomer(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا الزبون؟')) return;
+            
+            const customers = loadCustomers().filter(cust => cust.id !== id);
+            localStorage.setItem('customers', JSON.stringify(customers));
+            renderCustomers(customers);
+        }
 
-// تعديل زبون (مثال بسيط)
-function editCustomer(id) {
-const customers = JSON.parse(localStorage.getItem('customers')) || [];
-const cust = customers.find(c => c.id === id);
+        function editCustomer(id) {
+            // تنبيه مؤقت حتى إنشاء صفحة التعديل
+            alert('سيتم فتح صفحة التعديل قريباً');
+        }
 
-if (cust) {
-// توجيه إلى صفحة تعديل مع مُعلمة ID
-window.location.href = `customer-edit.html?id=${id}`;
-}
-}
-</script>
+        // البحث الفوري
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            const customers = loadCustomers();
+            const filtered = customers.filter(cust =>
+                cust.name.toLowerCase().includes(term) ||
+                cust.phone.includes(term)
+            );
+            renderCustomers(filtered);
+        });
+
+        // التهيئة الأولية
+        window.onload = () => renderCustomers(loadCustomers());
+    </script>
 </body>
 </html>
