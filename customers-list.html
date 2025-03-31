@@ -44,6 +44,9 @@
         .sidebar-header {
             padding: 1.5rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .sidebar-nav {
@@ -80,6 +83,9 @@
             box-shadow: 0 4px 12px rgba(255, 163, 67, 0.3);
             transition: var(--hover-effect);
             z-index: 1100;
+            border: none;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
         }
 
         .menu-toggle:hover {
@@ -91,6 +97,12 @@
             padding: 6rem 1.5rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
 
         /* شريط البحث */
@@ -179,26 +191,7 @@
             color: white;
         }
 
-        /* رسائل الخطأ */
-        .error-message {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            background: #FF5252;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            opacity: 0;
-            transition: var(--hover-effect);
-            transform: translateY(100%);
-        }
-
-        .error-message.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* مودال التعديل */
+        /* المودال المخصص */
         .custom-modal {
             position: fixed;
             top: 0;
@@ -262,6 +255,25 @@
             color: white;
         }
 
+        /* رسائل الخطأ */
+        .error-message {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            background: #FF5252;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            opacity: 0;
+            transition: var(--hover-effect);
+            transform: translateY(100%);
+        }
+
+        .error-message.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 padding: 5rem 1rem 1rem;
@@ -275,21 +287,6 @@
     </style>
 </head>
 <body>
-    <!-- مودال التعديل -->
-    <div class="custom-modal" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>تعديل بيانات الزبون</h3>
-            </div>
-            <input type="text" id="editName" class="modal-input" placeholder="الاسم الجديد">
-            <input type="text" id="editPhone" class="modal-input" placeholder="رقم الهاتف الجديد">
-            <div class="modal-actions">
-                <button class="modal-btn cancel-btn" onclick="closeModal()">إلغاء</button>
-                <button class="modal-btn confirm-btn" onclick="saveChanges()">حفظ التغييرات</button>
-            </div>
-        </div>
-    </div>
-
     <!-- القائمة الجانبية -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -325,6 +322,21 @@
         <!-- قائمة الزبائن -->
         <div class="customers-grid" id="customersList"></div>
     </main>
+
+    <!-- مودال التعديل -->
+    <div class="custom-modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تعديل بيانات الزبون</h3>
+            </div>
+            <input type="text" id="editName" class="modal-input" placeholder="الاسم الجديد">
+            <input type="text" id="editPhone" class="modal-input" placeholder="رقم الهاتف الجديد">
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" onclick="closeModal()">إلغاء</button>
+                <button class="modal-btn confirm-btn" onclick="saveChanges()">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
 
     <!-- رسالة الخطأ -->
     <div class="error-message" id="errorMessage"></div>
@@ -387,9 +399,8 @@
             renderCustomers(updated);
         }
 
-        // تعديل الزبون
+        // فتح مودال التعديل
         let currentEditingId = null;
-
         function editCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             const customer = customers.find(c => c.id === id);
@@ -402,6 +413,7 @@
             }
         }
 
+        // حفظ التعديلات
         function saveChanges() {
             const newName = document.getElementById('editName').value.trim();
             const newPhone = document.getElementById('editPhone').value.trim();
@@ -423,6 +435,7 @@
             }
         }
 
+        // إغلاق المودال
         function closeModal() {
             document.getElementById('editModal').style.display = 'none';
             currentEditingId = null;
@@ -445,14 +458,6 @@
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             renderCustomers(customers);
         });
-
-        // إغلاق المودال عند النقر خارج المحتوى
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('editModal');
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
     </script>
 </body>
-    </html>
+</html>
