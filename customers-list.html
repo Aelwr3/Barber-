@@ -168,38 +168,19 @@
             margin: 10px 0;
         }
 
-        /* أزرار التعديل والحذف */
-        .customer-actions {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .customer-actions button {
-            padding: 8px 15px;
-            background: #ff9f43;
-            color: #1a1a1a;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .customer-actions button:hover {
-            background: #ff6b35;
-        }
-
         /* زر اختيار الزبون */
         .select-customer-button {
-            margin-top: 40px;
-            padding: 12px 24px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 10px 20px;
             background: #ff9f43;
             color: #1a1a1a;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 1001;
         }
 
         .select-customer-button:hover {
@@ -288,7 +269,7 @@
         <h2>إدارة صالون الحلاقة</h2>
         <a href="dashboard.html">لوحة التحكم</a>
         <a href="customer-selection.html">إضافة زبون</a>
-        <a href="services.html">إدارة الخدمات</a>
+        <a href="customers-list.html">عرض الزبائن</a>
         <a href="invoices.html">إدارة الفواتير</a>
         <a href="invoice-search.html">بحث عن فاتورة</a>
         <a href="index.html">تسجيل خروج</a>
@@ -331,6 +312,7 @@
                     <div class="customer-actions">
                         <button onclick="editCustomer(${cust.id})">تعديل</button>
                         <button onclick="deleteCustomer(${cust.id})">حذف</button>
+                        <button class="select-customer-button" onclick="chooseCustomer(${cust.id})">اختيار</button>
                     </div>
                 </div>
             `).join('');
@@ -380,19 +362,15 @@
         }
 
         // اختيار زبون
-        function selectCustomer() {
+        function chooseCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const selectedId = prompt('أدخل ID الزبون الذي ترغب في اختياره:');
+            const selectedCustomer = customers.find(c => c.id === id);
             
-            if (selectedId) {
-                const selectedCustomer = customers.find(c => c.id === parseInt(selectedId));
-                
-                if (selectedCustomer) {
-                    localStorage.setItem('selectedCustomer', JSON.stringify(selectedCustomer));
-                    window.location.href = 'services.html';
-                } else {
-                    showError('لم يتم العثور على الزبون.');
-                }
+            if (selectedCustomer) {
+                localStorage.setItem('selectedCustomer', JSON.stringify(selectedCustomer));
+                window.location.href = 'services.html';
+            } else {
+                showError('لم يتم العثور على الزبون.');
             }
         }
 
