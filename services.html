@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>خدماتنا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* التصميم العام */
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+
+        /* الأيقونة الرئيسية */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #ff9f43;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* القائمة المخفية */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 300px;
+            height: 100%;
+            background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+            padding: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(255, 159, 67, 0.3);
+            z-index: 999;
+        }
+
+        .sidebar.show {
+            right: 0;
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #ff9f43;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .sidebar .close-btn:hover {
+            color: #fff;
+        }
+
+        .sidebar h2 {
+            color: #ff9f43;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px 25px;
+            color: #fff;
+            text-decoration: none;
+            margin: 10px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar a:hover {
+            background: #ff9f43;
+            color: #1a1a1a;
+        }
+
+        /* الجزء الرئيسي */
+        .main-content {
+            padding: 40px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        /* الكلمة الرئيسية */
+        .service-title {
+            font-size: 24px;
+            color: #ff9f43;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* البطاقات الديناميكية */
+        .carousel {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .carousel .card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .carousel .card.hidden {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .carousel .card.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .carousel .card p {
+            font-size: 18px;
+            color: #fff;
+            margin: 10px 0;
+        }
+
+        /* الأزرار في الأسفل */
+        .action-buttons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            background: #ff9f43;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-buttons button:hover {
+            background: #ff6b35;
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .carousel {
+                width: 100%;
+                height: 200px;
+            }
+
+            .action-buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .action-buttons button {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الخلفية -->
+    <div class="background"></div>
+
+    <!-- الأيقونة الرئيسية -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <span>☰</span>
+    </div>
+
+    <!-- القائمة المخفية -->
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleMenu()">×</span>
+        <h2>إدارة صالون الحلاقة</h2>
+        <a href="dashboard.html">لوحة التحكم</a>
+        <a href="customer-selection.html">إضافة زبون</a>
+        <a href="customers-list.html">عرض الزبائن</a>
+        <a href="invoices.html">إدارة الفواتير</a>
+        <a href="invoice-search.html">بحث عن فاتورة</a>
+        <a href="index.html">تسجيل خروج</a>
+    </div>
+
+    <!-- الجزء الرئيسي -->
+    <div class="main-content">
+        <h1 class="service-title" style="color: #ff9f43; text-align: center; margin-bottom: 40px;">خدماتنا</h1>
+
+        <!-- البطاقات الديناميكية -->
+        <div class="carousel" id="carousel">
+            <img src="https://via.placeholder.com/300x300" class="card active" data-name="حلاقة الوجه والرأس" data-price="30 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="حلاقة الرأس" data-price="20 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="حلاقة الوجه العادي" data-price="10 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="حلاقة الوجه بالكريدي وطرساج" data-price="15 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="حلاقة الأطفال" data-price="15 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="غسل الشعر" data-price="10 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="ترطيب الشعر" data-price="60 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="تنظيف الوجه بالكامل" data-price="70 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="بروشنغ" data-price="10 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="صباغة الرأس" data-price="50 درهم">
+            <img src="https://via.placeholder.com/300x300" class="card" data-name="ماسك أسود" data-price="40 درهم">
+        </div>
+
+        <!-- الأزرار في الأسفل -->
+        <div class="action-buttons">
+            <button onclick="confirmSelection()">تأكيد</button>
+            <button onclick="openEditModal()">تعديل</button>
+        </div>
+    </div>
+
+    <!-- نموذج التعديل -->
+    <div id="editModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>خدماتك المختارة</h2>
+            <div id="selectedServices"></div>
+            <button onclick="closeEditModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <script>
+        // تفعيل القائمة المخفية
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        // التمرير بين البطاقات
+        let currentCard = 0;
+        const cards = document.querySelectorAll('.carousel .card');
+
+        document.addEventListener('touchstart', handleTouchStart, false);
+        document.addEventListener('touchmove', handleTouchMove, false);
+
+        let xDown = null;
+        let yDown = null;
+
+        function handleTouchStart(evt) {
+            xDown = evt.touches[0].clientX;
+            yDown = evt.touches[0].clientY;
+        }
+
+        function handleTouchMove(evt) {
+            if (!xDown || !yDown) return;
+
+            const xUp = evt.touches[0].clientX;
+            const yUp = evt.touches[0].clientY;
+
+            const xDiff = xDown - xUp;
+            const yDiff = yDown - yUp;
+
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff > 0) {
+                    nextCard();
+                } else {
+                    prevCard();
+                }
+            }
+
+            xDown = null;
+            yDown = null;
+        }
+
+        function nextCard() {
+            cards[currentCard].classList.remove('active');
+            currentCard = (currentCard + 1) % cards.length;
+            cards[currentCard].classList.add('active');
+        }
+
+        function prevCard() {
+            cards[currentCard].classList.remove('active');
+            currentCard = (currentCard - 1 + cards.length) % cards.length;
+            cards[currentCard].classList.add('active');
+        }
+
+        // تأكيد اختيار الخدمة
+        function confirmSelection() {
+            const service = cards[currentCard];
+            const serviceName = service.getAttribute('data-name');
+            const servicePrice = service.getAttribute('data-price');
+
+            let selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            selected.push({ name: serviceName, price: servicePrice });
+            localStorage.setItem('selectedServices', JSON.stringify(selected));
+
+            window.location.href = 'invoice.html';
+        }
+
+        // فتح نموذج التعديل
+        function openEditModal() {
+            const selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            const modalContent = document.getElementById('selectedServices');
+            modalContent.innerHTML = '';
+
+            selected.forEach((item, index) => {
+                modalContent.innerHTML += `
+                    <div class="service-item" id="service-${index}">
+                        <p>${item.name} - ${item.price}</p>
+                        <button onclick="editService(${index})">تعديل</button>
+                        <button onclick="deleteService(${index})">حذف</button>
+                    </div>
+                `;
+            });
+
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'block';
+        }
+
+        // إغلاق نموذج التعديل
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+
+        // تعديل الخدمة
+        function editService(index) {
+            const modalContent = document.getElementById('selectedServices');
+            const serviceItem = modalContent.querySelector(`#service-${index}`);
+            const newName = prompt('أدخل اسم الخدمة:');
+            const newPrice = prompt('أدخل سعر الخدمة:');
+            
+            if (newName && newPrice) {
+                const selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+                selected[index].name = newName;
+                selected[index].price = newPrice;
+                localStorage.setItem('selectedServices', JSON.stringify(selected));
+
+                serviceItem.querySelector('p').textContent = `${newName} - ${newPrice}`;
+            }
+        }
+
+        // حذف الخدمة
+        function deleteService(index) {
+            const selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            selected.splice(index, 1);
+            localStorage.setItem('selectedServices', JSON.stringify(selected));
+
+            openEditModal();
+        }
+    </script>
+</body>
+</html>
