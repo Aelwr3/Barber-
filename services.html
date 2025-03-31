@@ -127,11 +127,13 @@
             transition: var(--hover-effect);
             position: relative;
             cursor: pointer;
+            transform-style: preserve-3d;
         }
 
         .service-card.active {
             border-color: var(--primary-color);
             box-shadow: 0 0 20px rgba(255, 163, 67, 0.3);
+            transform: rotateY(10deg);
         }
 
         .service-label {
@@ -179,14 +181,33 @@
             padding: 1rem;
             border-radius: 10px;
             margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 1rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .edit-form.active {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+        }
+
+        .edit-input {
+            flex: 1;
+            padding: 0.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            color: var(--text-color);
         }
 
         .service-actions {
             display: flex;
             gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
         .modal-btn {
@@ -258,7 +279,19 @@
             <div class="selected-services-list" id="selectedServices"></div>
             <div class="modal-actions">
                 <button class="modal-btn cancel-btn" onclick="closeEditModal()">إغلاق</button>
-                <button class="modal-btn confirm-btn" onclick="proceedToPayment()">إتمام الحجز</button>
+                <button class="modal-btn confirm-btn" onclick="showPaymentModal()">إتمام الحجز</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تأكيد الدفع -->
+    <div class="custom-modal" id="paymentModal">
+        <div class="modal-content">
+            <h2>تأكيد الحجز</h2>
+            <p>هل أنت متأكد من إتمام عملية الحجز؟</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" onclick="closePaymentModal()">إلغاء</button>
+                <button class="modal-btn confirm-btn" onclick="confirmPayment()">تأكيد</button>
             </div>
         </div>
     </div>
@@ -299,11 +332,11 @@
                 card.classList.remove('active');
             });
             selectedIndex = index;
-            document.querySelector(`.service-card[data-index="${index}"]`).classList.add('active');
+            const selectedCard = document.querySelector(`.service-card[data-index="${index}"]`);
+            selectedCard.classList.add('active');
             
             // تمرير سلس للبطاقة المختارة
-            const card = document.querySelector(`.service-card[data-index="${index}"]`);
-            card.scrollIntoView({
+            selectedCard.scrollIntoView({
                 behavior: 'smooth',
                 block: 'nearest',
                 inline: 'center'
@@ -319,7 +352,7 @@
         function selectService() {
             const selectedService = services[selectedIndex];
             let selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
-            selected.push(selectedService);
+            selected.push({...selectedService});
             localStorage.setItem('selectedServices', JSON.stringify(selected));
             updateSelectedServices();
             openEditModal();
@@ -330,22 +363,47 @@
             const selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
             const container = document.getElementById('selectedServices');
             container.innerHTML = selected.map((service, index) => `
-                <div class="service-item">
+                <div class="service-item" id="service-${index}">
                     <div>
                         <p class="service-label">${service.name}</p>
                         <p class="price-label">${service.price}</p>
                     </div>
                     <div class="service-actions">
+                        <button class="modal-btn" onclick="toggleEditForm(${index})">✎</button>
                         <button class="modal-btn cancel-btn" onclick="deleteService(${index})">حذف</button>
+                    </div>
+                    <div class="edit-form">
+                        <input type="text" class="edit-input" value="${service.name}">
+                        <input type="text" class="edit-input" value="${service.price}">
+                        <button class="modal-btn confirm-btn" onclick="saveChanges(${index})">حفظ</button>
+                        <button class="modal-btn cancel-btn" onclick="toggleEditForm(${index})">إلغاء</button>
                     </div>
                 </div>
             `).join('');
         }
 
+        // إظهار/إخفاء نموذج التعديل
+        function toggleEditForm(index) {
+            const form = document.querySelector(`#service-${index} .edit-form`);
+            form.classList.toggle('active');
+        }
+
+        // حفظ التغييرات
+        function saveChanges(index) {
+            const serviceItem = document.querySelector(`#service-${index}`);
+            const newName = serviceItem.querySelector('.edit-input:first-child').value;
+            const newPrice = serviceItem.querySelector('.edit-input:last-child').value;
+
+            let selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            selected[index] = { name: newName, price: newPrice };
+            localStorage.setItem('selectedServices', JSON.stringify(selected));
+            
+            updateSelectedServices();
+        }
+
         // فتح المودال
         function openEditModal() {
             document.getElementById('editModal').style.display = 'flex';
-            updateSelectedServices();
         }
 
         // إغلاق المودال
@@ -361,10 +419,20 @@
             updateSelectedServices();
         }
 
-        // إتمام الحجز
-        function proceedToPayment() {
-            // إضافة منطق إتمام الحجز هنا
-            alert('سيتم تنفيذ عملية الدفع...'); // يمكن استبدالها بمودال دفع مخصص
+        // عرض مودال الدفع
+        function showPaymentModal() {
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        // إغلاق مودال الدفع
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        // تأكيد الدفع
+        function confirmPayment() {
+            localStorage.removeItem('selectedServices');
+            window.location.href = 'invoice.html';
         }
 
         // التهيئة الأولية
