@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>عرض الزبائن</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* نسخ التصميمات الأساسية من dashboard.html */
+body {
+font-family: 'Cairo', sans-serif;
+margin: 0;
+padding: 0;
+background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+color: #fff;
+min-height: 100vh;
+overflow-x: hidden;
+touch-action: pan-y;
+}
+
+/* الأيقونة الرئيسية */
+.menu-toggle {
+position: fixed;
+top: 20px;
+right: 20px;
+width: 50px;
+height: 50px;
+background: #ff9f43;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
+transition: all 0.3s ease;
+z-index: 1000;
+}
+
+/* القائمة المخفية */
+.sidebar {
+position: fixed;
+top: 0;
+right: -400px;
+width: 100%;
+max-width: 300px;
+height: 100%;
+background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+padding: 20px;
+transition: all 0.3s ease;
+box-shadow: 0 0 30px rgba(255, 159, 67, 0.3);
+z-index: 999;
+}
+
+/* باقي التصميمات (كopi من dashboard.html مع تعديلات) */
+.main-content {
+padding: 40px 20px;
+height: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+transition: all 0.3s ease;
+}
+
+/* مربع البحث */
+.search-bar {
+width: 100%;
+max-width: 600px;
+margin-bottom: 30px;
+position: relative;
+}
+
+.search-bar input {
+width: 100%;
+padding: 15px;
+background: rgba(255, 255, 255, 0.1);
+border: none;
+border-radius: 20px;
+color: #fff;
+font-size: 16px;
+}
+
+.search-bar i {
+position: absolute;
+top: 50%;
+right: 20px;
+transform: translateY(-50%);
+font-size: 24px;
+color: #ff9f43;
+}
+
+/* قائمة الزبائن */
+.customers-list {
+width: 100%;
+max-width: 1200px;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 20px;
+}
+
+.customer-card {
+background: rgba(255, 255, 255, 0.1);
+padding: 25px;
+border-radius: 20px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+transition: all 0.3s ease;
+text-align: center;
+}
+
+.customer-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 8px 30px rgba(255, 159, 67, 0.4);
+}
+
+.customer-card h3 {
+color: #ff9f43;
+margin-bottom: 15px;
+}
+
+.customer-card p {
+color: #fff;
+margin: 10px 0;
+}
+
+/* أزرار التعديل والحذف */
+.customer-actions {
+margin-top: 20px;
+display: flex;
+gap: 10px;
+}
+
+.customer-actions button {
+padding: 8px 15px;
+background: #ff9f43;
+color: #1a1a1a;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+.customer-actions button:hover {
+background: #ff6b35;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+.search-bar input {
+padding: 12px;
+font-size: 14px;
+}
+
+.customer-card {
+padding: 20px;
+min-width: 100%;
+}
+
+.customer-card h3 {
+font-size: 18px;
+}
+}
+</style>
+</head>
+<body>
+<!-- الخلفية -->
+<div class="background"></div>
+
+<!-- الأيقونة الرئيسية -->
+<div class="menu-toggle" onclick="toggleMenu()">
+<span>☰</span>
+</div>
+
+<!-- القائمة المخفية -->
+<div class="sidebar" id="sidebar">
+<span class="close-btn" onclick="toggleMenu()">×</span>
+<h2>إدارة صالون الحلاقة</h2>
+<a href="dashboard.html">لوحة التحكم</a>
+<a href="customer-selection.html">إضافة زبون</a>
+<a href="services.html">إدارة الخدمات</a>
+<a href="invoices.html">إدارة الفواتير</a>
+<a href="invoice-search.html">بحث عن فاتورة</a>
+<a href="index.html">تسجيل خروج</a>
+</div>
+
+<!-- الجزء الرئيسي -->
+<div class="main-content">
+<h1 style="color: #ff9f43; text-align: center; margin-bottom: 40px;">قائمة الزبائن</h1>
+
+<!-- مربع البحث -->
+<div class="search-bar">
+<input type="text" id="searchInput" placeholder="ابحث باسم أو رقم هاتف...">
+<i>🔍</i>
+</div>
+
+<!-- قائمة الزبائن -->
+<div class="customers-list" id="customersList"></div>
+</div>
+
+<script>
+// تفعيل القائمة المخفية (نفس الكود في dashboard.html)
+function toggleMenu() {
+const sidebar = document.getElementById('sidebar');
+sidebar.classList.toggle('show');
+}
+
+// دالة عرض الزبائن
+function renderCustomers(customers) {
+const list = document.getElementById('customersList');
+list.innerHTML = customers.map(cust => `
+<div class="customer-card">
+<h3>${cust.name}</h3>
+<p>رقم الهاتف: ${cust.phone}</p>
+<div class="customer-actions">
+<button onclick="editCustomer(${cust.id})">تعديل</button>
+<button onclick="deleteCustomer(${cust.id})">حذف</button>
+</div>
+</div>
+`).join('');
+}
+
+// عرض الزبائن عند تحميل الصفحة
+window.onload = function() {
+const customers = JSON.parse(localStorage.getItem('customers')) || [];
+renderCustomers(customers);
+};
+
+// مربع البحث
+document.getElementById('searchInput').addEventListener('input', function(e) {
+const term = e.target.value.toLowerCase();
+const filtered = (JSON.parse(localStorage.getItem('customers')) || []).filter(cust =>
+cust.name.toLowerCase().includes(term) ||
+cust.phone.includes(term)
+);
+renderCustomers(filtered);
+});
+
+// حذف زبون
+function deleteCustomer(id) {
+const customers = JSON.parse(localStorage.getItem('customers')) || [];
+const newCustomers = customers.filter(cust => cust.id !== id);
+localStorage.setItem('customers', JSON.stringify(newCustomers));
+renderCustomers(newCustomers);
+}
+
+// تعديل زبون (مثال بسيط)
+function editCustomer(id) {
+const customers = JSON.parse(localStorage.getItem('customers')) || [];
+const cust = customers.find(c => c.id === id);
+
+if (cust) {
+// توجيه إلى صفحة تعديل مع مُعلمة ID
+window.location.href = `customer-edit.html?id=${id}`;
+}
+}
+</script>
+</body>
+</html>
+```
+
+---
+
+### **صفحة `customer-edit.html` (للتعديل):**
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>تعديل بيانات الزبون</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* نسخ التصميمات من dashboard.html */
+body {
+font-family: 'Cairo', sans-serif;
+margin: 0;
+padding: 0;
+background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+color: #fff;
+min-height: 100vh;
+overflow-x: hidden;
+touch-action: pan-y;
+}
+
+.menu-toggle {
+position: fixed;
+top: 20px;
+right: 20px;
+width: 50px;
+height: 50px;
+background: #ff9f43;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
+transition: all 0.3s ease;
+z-index: 1000;
+}
+
+/* باقي التصميمات */
+.main-content {
+padding: 40px 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+form {
+width: 100%;
+max-width: 600px;
+padding: 30px;
+background: rgba(255, 255, 255, 0.1);
+border-radius: 20px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+margin-top: 40px;
+}
+
+form input {
+width: 100%;
+padding: 12px;
+margin: 10px 0;
+background: rgba(255, 255, 255, 0.1);
+border: none;
+border-radius: 8px;
+color: #fff;
+}
+
+form button {
+margin-top: 20px;
+padding: 12px 24px;
+background: #ff9f43;
+color: #1a1a1a;
+border: none;
+border-radius: 12px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+form button:hover {
+background: #ff6b35;
+}
+</style>
+</head>
+<body>
+<!-- الأيقونة والقائمة -->
+<div class="menu-toggle" onclick="toggleMenu()">
+<span>☰</span>
+</div>
+
+<div class="sidebar" id="sidebar">
+<span class="close-btn" onclick="toggleMenu()">×</span>
+<h2>إدارة صالون الحلاقة</h2>
+<a href="dashboard.html">لوحة التحكم</a>
+<a href="customer-selection.html">إضافة زبون</a>
+<a href="services.html">إدارة الخدمات</a>
+<a href="invoices.html">إدارة الفواتير</a>
+<a href="invoice-search.html">بحث عن فاتورة</a>
+<a href="index.html">تسجيل خروج</a>
+</div>
+
+<div class="main-content">
+<h1 style="color: #ff9f43; text-align: center; margin-bottom: 40px;">تعديل بيانات الزبون</h1>
+
+<form onsubmit="updateCustomer(event)">
+<input type="hidden" id="customerId">
+<div class="input-group">
+<label for="customerName">اسم الزبون:</label>
+<input type="text" id="customerName" required>
+</div>
+
+<div class="input-group">
+<label for="customerPhone">رقم الهاتف:</label>
+<input type="tel" id="customerPhone" required>
+</div>
+
+<button type="submit">حفظ التعديلات</button>
+</form>
+</div>
+
+<script>
+// تفعيل القائمة المخفية
+function toggleMenu() {
+const sidebar = document.getElementById('sidebar');
+sidebar.classList.toggle('show');
+}
+
+// استرداد بيانات الزبون من localStorage
+window.onload = function() {
+const customerId = new URLSearchParams(window.location.search).get('id');
+const customers = JSON.parse(localStorage.getItem('customers')) || [];
+const cust = customers.find(c => c.id == customerId);
+
+if (cust) {
+document.getElementById('customerId').value = cust.id;
+document.getElementById('customerName').value = cust.name;
+document.getElementById('customerPhone').value = cust.phone;
+}
+}
+
+// حفظ التعديلات
+function updateCustomer(event) {
+event.preventDefault();
+
+const id = document.getElementById('customerId').value;
+const name = document.getElementById('customerName').value;
+const phone = document.getElementById('customerPhone').value;
+
+const customers = JSON.parse(localStorage.getItem('customers')) || [];
+const index = customers.findIndex(c => c.id == id);
+
+if (index !== -1) {
+customers[index].name = name;
+customers[index].phone = phone;
+localStorage.setItem('customers', JSON.stringify(customers));
+alert('تم التعديل بنجاح!');
+window.location.href = 'customers-list.html';
+}
+}
+</script>
+</body>
+</html>
+```
+
+---
+
+### **التحسينات المضمنة في صفحة الزبائن:**
+1. **صفحة `customers-list.html`:**
+- **مربع بحث** لفلترة الزبائن بناءً على الاسم أو رقم الهاتف.
+- **زر حذف/تعديل** لكل زبون.
+- **تصميم متجاوب** مع شاشات الهواتف.
+
+2. **صفحة `customer-edit.html`:**
+- **عرض بيانات الزبون** بناءً على `id` المُرسل في URL.
+- **حفظ التعديلات** في localStorage.
+- **إعادة توجيه** إلى صفحة القائمة بعد الحفظ.
+
+---
+
+### **كيفية استخدامها:**
+1. **إضافة زبون جديد:**
+- اذهب إلى `customer-selection.html` → أدخل البيانات → "حفظ الزبون".
+- البيانات تُحفظ في localStorage وتظهر في `customers-list.html`.
+
+2. **تعديل زبون:**
+- اضغط على **"تعديل"** في صفحة القائمة → تُفتح `customer-edit.html` مع البيانات.
+- أعد توجيه إلى `customers-list.html` بعد الحفظ.
+
+3. **حذف زبون:**
+- اضغط على **"حذف"** في صفحة القائمة → تُحذف البيانات من localStorage.
+
+---
+
+### **ملاحظات:**
+- **التصميم الموحد:**
+- نفس الخلفية، الأيقونة، والقائمة المخفية.
+- ألوان ذهبية (#FF9F43) مُنسقة مع التصميم العام.
+
+- **الدعم التام للشاشات:**
+- تصميم متجاوب مع إدخالات مُحسّنة للهواتف.
+
+- **الوظائف الكاملة:**
+- عرض، بحث، تعديل، حذف الزبائن.
+
+---
+
+### **النتيجة النهائية:**
+صفحة `customers-list.html` مع:
+- **قائمة الزبائن** مع إمكانية الحذف/التعديل.
+- **مربع بحث** فعال.
+- **صفحة تعديل** مُصممة بذوق.
+
+---
+
+### **الخطوة القادمة:**
+هل تريد إضافة ميزات إضافية إلى صفحة الزبائن؟ أم ننتقل إلى صفحة أخرى (مثل `services.html` أو `invoices.html`)?
+
+
+
+
+
+
+How can I help you today?
+
+
+
+Think
