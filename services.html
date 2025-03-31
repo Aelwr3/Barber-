@@ -167,35 +167,11 @@
             margin: 10px 0;
         }
 
-        /* الزر المربع والمستطيل */
-        .carousel .card.active {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #ff9f43;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(255, 159, 67, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .carousel .card.active .service-label {
-            font-size: 24px;
-            color: #ff9f43;
-            font-weight: bold;
-        }
-
-        .carousel .card.active .price-label {
-            font-size: 18px;
-            color: #fff;
-        }
-
-        /* الأزرار في الأسفل */
-        .action-buttons {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-            width: 200px;
-        }
-
-        .action-buttons button {
+        /* زر اختيار الخدمة */
+        .select-customer-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
             padding: 10px 20px;
             background: #ff9f43;
             color: #1a1a1a;
@@ -203,9 +179,10 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 1001;
         }
 
-        .action-buttons button:hover {
+        .select-customer-button:hover {
             background: #ff6b35;
         }
 
@@ -359,15 +336,15 @@
             </div>
             <div class="card" data-name="حلاقة الرأس" data-price="20 درهم">
                 <p class="service-label">حلاقة الرأس</p>
-                <p class="price-label">20 درهم</p>
+                <<p class="price-label">20 درهم</p>
             </div>
             <div class="card" data-name="حلاقة الوجه العادي" data-price="10 درهم">
                 <p class="service-label">حلاقة الوجه العادي</p>
-                <p class="price-label">10 درهم</p>
+                <<p class="price-label">10 درهم</p>
             </div>
             <div class="card" data-name="حلاقة الوجه بالكريدي وطرساج" data-price="15 درهم">
                 <p class="service-label">حلاقة الوجه بالكريدي وطرساج</p>
-                <p class="price-label">15 درهم</p>
+                <<p class="price-label">15 درهم</p>
             </div>
             <div class="card" data-name="حلاقة الأطفال" data-price="15 درهم">
                 <p class="service-label">حلاقة الأطفال</p>
@@ -375,35 +352,32 @@
             </div>
             <div class="card" data-name="غسل الشعر" data-price="10 درهم">
                 <p class="service-label">غسل الشعر</p>
-                <p class="price-label">10 درهم</p>
+                <<p class="price-label">10 درهم</p>
             </div>
             <div class="card" data-name="ترطيب الشعر" data-price="60 درهم">
                 <p class="service-label">ترطيب الشعر</p>
-                <p class="price-label">60 درهم</p>
+                <<p class="price-label">60 درهم</p>
             </div>
             <div class="card" data-name="تنظيف الوجه بالكامل" data-price="70 درهم">
                 <p class="service-label">تنظيف الوجه بالكامل</p>
-                <p class="price-label">70 درهم</p>
+                <<p class="price-label">70 درهم</p>
             </div>
             <div class="card" data-name="بروشنغ" data-price="10 درهم">
                 <p class="service-label">بروشنغ</p>
-                <p class="price-label">10 درهم</p>
+                <<p class="price-label">10 درهم</p>
             </div>
             <div class="card" data-name="صباغة الرأس" data-price="50 درهم">
                 <p class="service-label">صباغة الرأس</p>
-                <p class="price-label">50 درهم</p>
+                <<p class="price-label">50 درهم</p>
             </div>
             <div class="card" data-name="ماسك أسود" data-price="40 درهم">
                 <p class="service-label">ماسك أسود</p>
-                <p class="price-label">40 درهم</p>
+                <<p class="price-label">40 درهم</p>
             </div>
         </div>
 
-        <!-- الأزرار في الأسفل -->
-        <div class="action-buttons">
-            <button onclick="confirmSelection()">تأكيد</button>
-            <button onclick="openEditModal()">تعديل</button>
-        </div>
+        <!-- زر اختيار الخدمة -->
+        <button class="select-customer-button" onclick="selectService()">اختيار خدمة</button>
 
         <!-- الصفحة المنبثقة -->
         <div id="editModal" class="modal">
@@ -470,8 +444,8 @@
             cards[currentCard].classList.add('active');
         }
 
-        // تأكيد اختيار الخدمة
-        function confirmSelection() {
+        // اختيار خدمة
+        function selectService() {
             const service = cards[currentCard];
             const serviceName = service.getAttribute('data-name');
             const servicePrice = service.getAttribute('data-price');
@@ -480,7 +454,7 @@
             selected.push({ name: serviceName, price: servicePrice });
             localStorage.setItem('selectedServices', JSON.stringify(selected));
 
-            window.location.href = 'invoice.html';
+            openEditModal();
         }
 
         // فتح الصفحة المنبثقة
