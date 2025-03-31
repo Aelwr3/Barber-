@@ -11,7 +11,7 @@
             font-family: 'Cairo', sans-serif;
             margin: 0;
             padding: 0;
-            background: #1a1a1a;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
             color: #fff;
             overflow: hidden;
             height: 100vh;
@@ -35,7 +35,7 @@
         }
 
         .menu-toggle:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         /* القائمة المخفية */
@@ -46,7 +46,7 @@
             width: 300px;
             height: 100%;
             background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
-            padding: 30px;
+            padding: 20px;
             transition: all 0.3s ease;
             box-shadow: 0 0 30px rgba(255, 159, 67, 0.3);
         }
@@ -55,22 +55,36 @@
             right: 0;
         }
 
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #ff9f43;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .sidebar .close-btn:hover {
+            color: #fff;
+        }
+
         .sidebar h2 {
             color: #ff9f43;
             font-size: 24px;
             margin-bottom: 30px;
+            text-align: center;
         }
 
         .sidebar a {
-            display: flex;
-            align-items: center;
-            padding: 18px 25px;
+            display: block;
+            padding: 15px 25px;
             color: #fff;
             text-decoration: none;
             margin: 10px 0;
-            border-radius: 12px;
+            border-radius: 10px;
             transition: all 0.3s ease;
-            position: relative;
+            text-align: center;
         }
 
         .sidebar a:hover {
@@ -78,43 +92,12 @@
             color: #1a1a1a;
         }
 
-        .sidebar a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            background: rgba(255, 159, 67, 0.2);
-            transform: scale(0);
-            transition: all 0.3s ease;
-        }
-
-        .sidebar a:hover::before {
-            transform: scale(1);
-        }
-
-        /* الأيقونات */
-        .sidebar i {
-            font-size: 28px;
-            margin-right: 15px;
-            color: #ff9f43;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar a:hover i {
-            transform: translateX(5px);
-        }
-
         /* الجزء الرئيسي */
         .main-content {
             padding: 40px;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: grid;
+            place-items: center;
             transition: all 0.3s ease;
         }
 
@@ -122,19 +105,16 @@
         .statistics {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+            gap: 20px;
             width: 100%;
-            max-width: 1200px;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
             text-align: center;
         }
 
@@ -143,29 +123,41 @@
             box-shadow: 0 8px 30px rgba(255, 159, 67, 0.4);
         }
 
-        .stat-card .emoji {
-            font-size: 60px;
-            color: #ff9f43;
-            margin-bottom: 20px;
-        }
-
         .stat-card h3 {
             color: #ff9f43;
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 20px;
+            margin-bottom: 15px;
         }
 
         .stat-card span {
-            font-size: 48px;
+            font-size: 36px;
             font-weight: 600;
             color: #fff;
+            margin-bottom: 10px;
         }
 
-        /* تصميم استجابي */
+        /* أشكال جمالية */
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 120%;
+            height: 120%;
+            border-radius: 30px;
+            background: rgba(255, 159, 67, 0.2);
+            transform: rotate(-5deg);
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        /* تصميم متجاوب */
         @media (max-width: 768px) {
             .menu-toggle {
-                right: 10px;
                 top: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
             }
 
             .sidebar {
@@ -173,12 +165,12 @@
                 max-width: 300px;
             }
 
-            .statistics {
-                grid-template-columns: 1fr;
+            .stat-card {
+                min-width: 280px;
             }
         }
 
-        /* تأثيرات خلفية */
+        /* تصميم الخلفية */
         .background {
             position: fixed;
             top: 0;
@@ -186,66 +178,22 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none;
-            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
         }
 
-        .background span {
-            position: absolute;
-            font-size: 40px;
-            color: rgba(255, 159, 67, 0.3);
-            animation: float 10s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(15px, -20px); }
-            100% { transform: translate(0, 0); }
-        }
-
-        /* أيقونة دوران في المنتصف */
-        .central-emoji {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 80px;
-            color: #ff9f43;
-            animation: spin 3s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* ألوان وخطوط */
-        body {
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        button {
-            padding: 15px 30px;
-            background: #ff9f43;
-            color: #1a1a1a;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            background: #ff6b35;
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
     </style>
 </head>
 <body>
+    <!-- الخلفية -->
+    <div class="background"></div>
+
     <!-- الأيقونة الرئيسية -->
     <div class="menu-toggle" onclick="toggleMenu()">
         <span>☰</span>
@@ -253,70 +201,44 @@
 
     <!-- القائمة المخفية -->
     <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleMenu()">×</span>
         <h2>إدارة صالون الحلاقة</h2>
-        <a href="customer-selection.html">
-            <i>🧔</i> إضافة زبون
-        </a>
-        <a href="customers-list.html">
-            <i>📋</i> عرض الزبائن
-        </a>
-        <a href="services.html">
-            <i>✂️</i> إدارة الخدمات
-        </a>
-        <a href="invoices.html">
-            <i>🧾</i> إدارة الفواتير
-        </a>
-        <a href="invoice-search.html">
-            <i>🔍</i> بحث عن فاتورة
-        </a>
-        <a href="index.html">
-            <i>🚪</i> تسجيل خروج
-        </a>
+        <a href="customer-selection.html">إضافة زبون</a>
+        <a href="customers-list.html">عرض الزبائن</a>
+        <a href="services.html">إدارة الخدمات</a>
+        <a href="invoices.html">إدارة الفواتير</a>
+        <a href="invoice-search.html">بحث عن فاتورة</a>
+        <a href="home.html">تسجيل خروج</a>
     </div>
 
     <!-- الجزء الرئيسي -->
     <div class="main-content">
-        <h1 style="color: #ff9f43; text-align: center; margin-bottom: 50px;">إحصائيات اليوم</h1>
+        <h1 style="color: #ff9f43; text-align: center; margin-bottom: 40px;">إحصائيات اليوم</h1>
 
         <div class="statistics">
             <!-- عدد الزبائن -->
             <div class="stat-card">
-                <div class="emoji">🧔</div>
                 <h3>عدد الزبائن</h3>
                 <span id="customers-count">0</span>
             </div>
 
             <!-- الفواتير غير المدفوعة -->
             <div class="stat-card">
-                <div class="emoji">⚠️</div>
                 <h3>غير مدفوعة</h3>
                 <span id="unpaid-invoices">0</span>
             </div>
 
             <!-- الخدمة الأكثر طلبًا -->
             <div class="stat-card">
-                <div class="emoji">💇</div>
                 <h3>الأكثر طلبًا</h3>
                 <span id="top-service">...</span>
             </div>
         </div>
 
-        <button onclick="refreshStats()" style="margin-top: 40px; background: #ff9f43; color: #1a1a1a;">
+        <button onclick="refreshStats()" style="margin-top: 40px; padding: 15px 30px; background: #ff9f43; color: #1a1a1a; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;">
             تحديث الإحصائيات
         </button>
     </div>
-
-    <!-- خلفية الأيموجي المتحركة -->
-    <div class="background">
-        <span style="top: 10%; left: 5%; animation-delay: -2s;">💈</span>
-        <span style="top: 30%; right: 10%; animation-delay: -1s;">✂️</span>
-        <span style="bottom: 15%; left: 20%; animation-delay: -3s;">💅</span>
-        <span style="top: 60%; right: 30%; animation-delay: -4s;">🌕</span>
-        <span style="bottom: 5%; left: 40%; animation-delay: -5s;">🌝</span>
-    </div>
-
-    <!-- الأيقونة الدوران -->
-    <div class="central-emoji">💈</div>
 
     <script>
         // تفعيل القائمة المخفية
