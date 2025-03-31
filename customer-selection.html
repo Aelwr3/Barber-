@@ -1,1 +1,288 @@
-تت
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>إضافة زبون جديد</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* التصميم العام */
+body {
+font-family: 'Cairo', sans-serif;
+margin: 0;
+padding: 0;
+background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+color: #fff;
+min-height: 100vh;
+overflow-x: hidden;
+touch-action: pan-y;
+}
+
+/* الأيقونة الرئيسية */
+.menu-toggle {
+position: fixed;
+top: 20px;
+right: 20px;
+width: 50px;
+height: 50px;
+background: #ff9f43;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
+transition: all 0.3s ease;
+z-index: 1000;
+}
+
+.menu-toggle:hover {
+transform: scale(1.1);
+}
+
+/* القائمة المخفية */
+.sidebar {
+position: fixed;
+top: 0;
+right: -400px;
+width: 100%;
+max-width: 300px;
+height: 100%;
+background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+padding: 20px;
+transition: all 0.3s ease;
+box-shadow: 0 0 30px rgba(255, 159, 67, 0.3);
+z-index: 999;
+}
+
+.sidebar.show {
+right: 0;
+}
+
+.sidebar .close-btn {
+position: absolute;
+top: 15px;
+right: 15px;
+font-size: 24px;
+color: #ff9f43;
+cursor: pointer;
+transition: color 0.3s;
+}
+
+.sidebar .close-btn:hover {
+color: #fff;
+}
+
+.sidebar h2 {
+color: #ff9f43;
+font-size: 24px;
+margin-bottom: 30px;
+text-align: center;
+}
+
+.sidebar a {
+display: block;
+padding: 15px 25px;
+color: #fff;
+text-decoration: none;
+margin: 10px 0;
+border-radius: 10px;
+transition: all 0.3s ease;
+text-align: center;
+font-size: 16px;
+}
+
+.sidebar a:hover {
+background: #ff9f43;
+color: #1a1a1a;
+}
+
+/* الجزء الرئيسي */
+.main-content {
+padding: 40px 20px;
+height: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+transition: all 0.3s ease;
+}
+
+/* نموذج الإضافة */
+form {
+width: 100%;
+max-width: 600px;
+padding: 30px;
+background: rgba(255, 255, 255, 0.1);
+border-radius: 20px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+text-align: right;
+}
+
+form label {
+display: block;
+margin-bottom: 8px;
+color: #ff9f43;
+}
+
+form input {
+width: 100%;
+padding: 12px;
+margin: 10px 0;
+background: rgba(255, 255, 255, 0.1);
+border: none;
+border-radius: 8px;
+color: #fff;
+text-align: right;
+}
+
+form button {
+margin-top: 20px;
+padding: 12px 24px;
+background: #ff9f43;
+color: #1a1a1a;
+border: none;
+border-radius: 12px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+
+form button:hover {
+background: #ff6b35;
+}
+
+/* تصميم الخلفية */
+.background {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: -1;
+background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+background-size: 400% 400%;
+animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+.menu-toggle {
+top: 10px;
+right: 10px;
+width: 45px;
+height: 45px;
+}
+
+.sidebar {
+padding: 15px;
+}
+
+.sidebar a {
+padding: 12px 20px;
+font-size: 14px;
+}
+
+form {
+padding: 20px;
+}
+
+form input {
+padding: 10px;
+font-size: 14px;
+}
+
+form button {
+padding: 10px 20px;
+font-size: 14px;
+}
+}
+</style>
+</head>
+<body>
+<!-- الخلفية -->
+<div class="background"></div>
+
+<!-- الأيقونة الرئيسية -->
+<div class="menu-toggle" onclick="toggleMenu()">
+<span>☰</span>
+</div>
+
+<!-- القائمة المخفية -->
+<div class="sidebar" id="sidebar">
+<span class="close-btn" onclick="toggleMenu()">×</span>
+<h2>إدارة صالون الحلاقة</h2>
+<a href="dashboard.html">لوحة التحكم</a>
+<a href="customers-list.html">عرض الزبائن</a>
+<a href="services.html">إدارة الخدمات</a>
+<a href="invoices.html">إدارة الفواتير</a>
+<a href="invoice-search.html">بحث عن فاتورة</a>
+<a href="index.html">تسجيل خروج</a>
+</div>
+
+<!-- الجزء الرئيسي -->
+<div class="main-content">
+<h1 style="color: #ff9f43; text-align: right; margin-bottom: 40px;">إضافة زبون جديد</h1>
+
+<form onsubmit="saveCustomer(event)">
+<div class="form-group">
+<label for="customerName">اسم الزبون:</label>
+<input type="text" id="customerName" required>
+</div>
+
+<div class="form-group">
+<label for="customerPhone">رقم الهاتف:</label>
+<input type="tel" id="customerPhone" required>
+</div>
+
+<div class="form-group">
+<label for="customerEmail">البريد الإلكتروني (اختياري):</label>
+<input type="email" id="customerEmail">
+</div>
+
+<button type="submit" style="margin-top: 20px;">حفظ الزبون</button>
+</form>
+</div>
+
+<script>
+// تفعيل القائمة المخفية
+function toggleMenu() {
+const sidebar = document.getElementById('sidebar');
+sidebar.classList.toggle('show');
+}
+
+// حفظ الزبون في localStorage
+function saveCustomer(event) {
+event.preventDefault();
+
+const name = document.getElementById('customerName').value;
+const phone = document.getElementById('customerPhone').value;
+const email = document.getElementById('customerEmail').value;
+
+// التحقق من البيانات
+if (!name || !phone) {
+alert('يرجى ملء الحقول المطلوبة'); // يمكنك استبداله برسالة مرئية
+return;
+}
+
+// إضافة الزبون إلى localStorage
+let customers = JSON.parse(localStorage.getItem('customers')) || [];
+customers.push({
+id: Date.now(),
+name: name,
+phone: phone,
+email: email || ''
+});
+localStorage.setItem('customers', JSON.stringify(customers));
+
+// إظهار رسالة نجاح
+alert('تم حفظ الزبون بنجاح!'); // يمكنك استبداله برسالة مرئية
+window.location.href = 'customers-list.html'; // توجيه إلى القائمة
+}
+</script>
+</body>
+</html>
