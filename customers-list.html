@@ -190,6 +190,22 @@
             background: #ff6b35;
         }
 
+        /* زر اختيار الزبون */
+        .select-customer-button {
+            margin-top: 40px;
+            padding: 12px 24px;
+            background: #ff9f43;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select-customer-button:hover {
+            background: #ff6b35;
+        }
+
         /* رسالة الخطأ */
         .error {
             color: #ff4444;
@@ -291,6 +307,9 @@
         <!-- قائمة الزبائن -->
         <div class="customers-list" id="customersList"></div>
 
+        <!-- زر اختيار الزبون -->
+        <button class="select-customer-button" onclick="selectCustomer()">اختيار زبون</button>
+
         <!-- رسالة الخطأ -->
         <div class="error" id="errorMessage"></div>
     </div>
@@ -356,6 +375,23 @@
                     cust.phone = newPhone;
                     localStorage.setItem('customers', JSON.stringify(customers));
                     renderCustomers(customers);
+                }
+            }
+        }
+
+        // اختيار زبون
+        function selectCustomer() {
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            const selectedId = prompt('أدخل ID الزبون الذي ترغب في اختياره:');
+            
+            if (selectedId) {
+                const selectedCustomer = customers.find(c => c.id === parseInt(selectedId));
+                
+                if (selectedCustomer) {
+                    localStorage.setItem('selectedCustomer', JSON.stringify(selectedCustomer));
+                    window.location.href = 'services.html';
+                } else {
+                    showError('لم يتم العثور على الزبون.');
                 }
             }
         }
