@@ -17,17 +17,42 @@
             height: 100vh;
         }
 
-        /* شريط الجانبي */
+        /* الأيقونة الرئيسية */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #ff9f43;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* القائمة المخفية */
         .sidebar {
             position: fixed;
             top: 0;
-            right: 0;
+            right: -300px;
             width: 300px;
             height: 100%;
             background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
             padding: 30px;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 159, 67, 0.3);
+            box-shadow: 0 0 30px rgba(255, 159, 67, 0.3);
+        }
+
+        .sidebar.show {
+            right: 0;
         }
 
         .sidebar h2 {
@@ -72,7 +97,7 @@
 
         /* الأيقونات */
         .sidebar i {
-            font-size: 24px;
+            font-size: 28px;
             margin-right: 15px;
             color: #ff9f43;
             transition: all 0.3s ease;
@@ -84,13 +109,13 @@
 
         /* الجزء الرئيسي */
         .main-content {
-            margin-right: 300px;
             padding: 40px;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
         /* الإحصائيات */
@@ -118,19 +143,19 @@
         }
 
         .stat-card .emoji {
-            font-size: 48px;
+            font-size: 60px;
             color: #ff9f43;
             margin-bottom: 20px;
         }
 
         .stat-card h3 {
             color: #ff9f43;
-            font-size: 20px;
+            font-size: 24px;
             margin-bottom: 10px;
         }
 
         .stat-card span {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: 600;
             color: #fff;
         }
@@ -148,14 +173,14 @@
 
         .background span {
             position: absolute;
-            font-size: 60px;
+            font-size: 80px;
             color: rgba(255, 159, 67, 0.3);
             animation: float 10s infinite ease-in-out;
         }
 
         @keyframes float {
             0% { transform: translate(0, 0); }
-            50% { transform: translate(20px, -30px); }
+            50% { transform: translate(30px, -40px); }
             100% { transform: translate(0, 0); }
         }
 
@@ -165,7 +190,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 100px;
+            font-size: 120px;
             color: #ff9f43;
             animation: spin 3s linear infinite;
         }
@@ -177,20 +202,13 @@
     </style>
 </head>
 <body>
-    <!-- خلفية الأيموجي المتحركة -->
-    <div class="background">
-        <span style="top: 10%; left: 5%; animation-delay: -2s;">💈</span>
-        <span style="top: 30%; right: 10%; animation-delay: -1s;">✂️</span>
-        <span style="bottom: 15%; left: 20%; animation-delay: -3s;">💅</span>
-        <span style="top: 60%; right: 30%; animation-delay: -4s;">🌕</span>
-        <span style="bottom: 5%; left: 40%; animation-delay: -5s;">🌝</span>
+    <!-- الأيقونة الرئيسية للقائمة -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <span>☰</span>
     </div>
 
-    <!-- الأيقونة الدوران -->
-    <div class="central-emoji">💈</div>
-
-    <!-- شريط الجانبي -->
-    <div class="sidebar">
+    <!-- القائمة المخفية -->
+    <div class="sidebar" id="sidebar">
         <h2>إدارة صالون الحلاقة</h2>
         <a href="customer-selection.html">
             <i>🧔</i> إضافة زبون
@@ -239,12 +257,30 @@
             </div>
         </div>
 
-        <button onclick="refreshStats()" style="margin-top: 40px; padding: 15px 30px; background: #ff9f43; color: #1a1a1a; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;">
+        <button onclick="refreshStats()" style="margin-top: 40px; padding: 20px 40px; background: #ff9f43; color: #1a1a1a; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;">
             تحديث الإحصائيات
         </button>
     </div>
 
+    <!-- خلفية الأيموجي المتحركة -->
+    <div class="background">
+        <span style="top: 10%; left: 5%; animation-delay: -2s;">💈</span>
+        <span style="top: 30%; right: 10%; animation-delay: -1s;">✂️</span>
+        <span style="bottom: 15%; left: 20%; animation-delay: -3s;">💅</span>
+        <span style="top: 60%; right: 30%; animation-delay: -4s;">🌕</span>
+        <span style="bottom: 5%; left: 40%; animation-delay: -5s;">🌝</span>
+    </div>
+
+    <!-- الأيقونة الدوران -->
+    <div class="central-emoji">💈</div>
+
     <script>
+        // تفعيل القائمة المخفية
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
+
         // دالة لقراءة البيانات من localStorage
         function getDataFromStorage(key) {
             return JSON.parse(localStorage.getItem(key)) || [];
