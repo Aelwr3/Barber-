@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة الزبائن - صالون الحلاقة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet>
+    <title>قائمة الزبائن - صالون الحلاقة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #FFA343;
@@ -14,7 +14,6 @@
             --text-color: #FFFFFF;
             --hover-effect: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
@@ -23,7 +22,6 @@
             color: var(--text-color);
             min-height: 100vh;
         }
-
         /* القائمة الجانبية */
         .sidebar {
             position: fixed;
@@ -36,23 +34,16 @@
             transition: var(--hover-effect);
             z-index: 1000;
         }
-
         .sidebar.show {
             right: 0;
         }
-
         .sidebar-header {
             padding: 1.5rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-
         .sidebar-nav {
             padding: 1rem;
         }
-
         .sidebar-link {
             display: block;
             padding: 0.8rem 1rem;
@@ -62,12 +53,10 @@
             border-radius: 8px;
             transition: var(--hover-effect);
         }
-
         .sidebar-link:hover {
             background: var(--primary-color);
             color: var(--secondary-color);
         }
-
         /* زر القائمة */
         .menu-toggle {
             position: fixed;
@@ -83,28 +72,16 @@
             box-shadow: 0 4px 12px rgba(255, 163, 67, 0.3);
             transition: var(--hover-effect);
             z-index: 1100;
-            border: none;
-            color: var(--secondary-color);
-            font-size: 1.2rem;
         }
-
         .menu-toggle:hover {
             transform: rotate(90deg);
         }
-
         /* المحتوى الرئيسي */
         .main-content {
             padding: 6rem 1.5rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
-
-        .page-title {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-
         /* شريط البحث */
         .search-container {
             position: relative;
@@ -113,7 +90,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-
         .search-input {
             width: 100%;
             padding: 1rem 3rem 1rem 1rem;
@@ -124,12 +100,10 @@
             font-size: 1rem;
             transition: var(--hover-effect);
         }
-
         .search-input:focus {
             border-color: var(--primary-color);
             outline: none;
         }
-
         .search-icon {
             position: absolute;
             left: 1rem;
@@ -137,7 +111,6 @@
             transform: translateY(-50%);
             color: var(--primary-color);
         }
-
         /* بطاقات الزبائن */
         .customers-grid {
             display: grid;
@@ -145,7 +118,6 @@
             gap: 1.5rem;
             padding: 1rem 0;
         }
-
         .customer-card {
             background: var(--card-bg);
             padding: 1.5rem;
@@ -154,19 +126,16 @@
             transition: var(--hover-effect);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .customer-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(255, 163, 67, 0.2);
         }
-
         .customer-actions {
             display: flex;
             gap: 0.5rem;
             margin-top: 1.5rem;
             justify-content: flex-start;
         }
-
         .action-btn {
             padding: 0.5rem 1rem;
             border: none;
@@ -175,86 +144,18 @@
             transition: var(--hover-effect);
             font-weight: 600;
         }
-
         .select-btn {
             background: var(--primary-color);
             color: var(--secondary-color);
         }
-
         .edit-btn {
             background: #4CAF50;
             color: white;
         }
-
         .delete-btn {
             background: #FF5252;
             color: white;
         }
-
-        /* المودال المخصص */
-        .custom-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .modal-content {
-            background: var(--secondary-color);
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-        }
-
-        .modal-header {
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 1rem;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 1rem;
-            margin: 0.8rem 0;
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: var(--text-color);
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            justify-content: flex-end;
-        }
-
-        .modal-btn {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--hover-effect);
-        }
-
-        .confirm-btn {
-            background: var(--primary-color);
-            color: var(--secondary-color);
-        }
-
-        .cancel-btn {
-            background: #666;
-            color: white;
-        }
-
         /* رسائل الخطأ */
         .error-message {
             position: fixed;
@@ -268,17 +169,14 @@
             transition: var(--hover-effect);
             transform: translateY(100%);
         }
-
         .error-message.active {
             opacity: 1;
             transform: translateY(0);
         }
-
         @media (max-width: 768px) {
             .main-content {
                 padding: 5rem 1rem 1rem;
             }
-
             .menu-toggle {
                 top: 1rem;
                 right: 1rem;
@@ -302,42 +200,22 @@
             <a href="index.html" class="sidebar-link">تسجيل خروج</a>
         </div>
     </nav>
-
     <!-- زر القائمة -->
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-
     <!-- المحتوى الرئيسي -->
     <main class="main-content">
         <h1 class="page-title">إدارة الزبائن</h1>
-
         <!-- شريط البحث -->
         <div class="search-container">
-            <input type="text" 
-                   class="search-input" 
+            <input type="text"
+                   class="search-input"
                    placeholder="ابحث باسم الزبون أو رقم الهاتف..."
                    oninput="filterCustomers()">
             <span class="search-icon">🔍</span>
         </div>
-
         <!-- قائمة الزبائن -->
         <div class="customers-grid" id="customersList"></div>
     </main>
-
-    <!-- مودال التعديل -->
-    <div class="custom-modal" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>تعديل بيانات الزبون</h3>
-            </div>
-            <input type="text" id="editName" class="modal-input" placeholder="الاسم الجديد">
-            <input type="text" id="editPhone" class="modal-input" placeholder="رقم الهاتف الجديد">
-            <div class="modal-actions">
-                <button class="modal-btn cancel-btn" onclick="closeModal()">إلغاء</button>
-                <button class="modal-btn confirm-btn" onclick="saveChanges()">حفظ التغييرات</button>
-            </div>
-        </div>
-    </div>
-
     <!-- رسالة الخطأ -->
     <div class="error-message" id="errorMessage"></div>
 
@@ -355,15 +233,15 @@
                     <h3>${customer.name}</h3>
                     <p>📱 ${customer.phone}</p>
                     <div class="customer-actions">
-                        <button class="action-btn edit-btn" 
+                        <button class="action-btn edit-btn"
                                 onclick="editCustomer(${customer.id})">
                             تعديل
                         </button>
-                        <button class="action-btn delete-btn" 
+                        <button class="action-btn delete-btn"
                                 onclick="deleteCustomer(${customer.id})">
                             حذف
                         </button>
-                        <button class="action-btn select-btn" 
+                        <button class="action-btn select-btn"
                                 onclick="selectCustomer(${customer.id})">
                             اختيار
                         </button>
@@ -376,8 +254,8 @@
         function filterCustomers() {
             const searchTerm = document.querySelector('.search-input').value.toLowerCase();
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const filtered = customers.filter(c => 
-                c.name.toLowerCase().includes(searchTerm) || 
+            const filtered = customers.filter(c =>
+                c.name.toLowerCase().includes(searchTerm) ||
                 c.phone.includes(searchTerm)
             );
             renderCustomers(filtered);
@@ -391,7 +269,7 @@
             setTimeout(() => errorEl.classList.remove('active'), 3000);
         }
 
-        // حذف الزبون
+        // عمليات CRUD
         function deleteCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             const updated = customers.filter(c => c.id !== id);
@@ -399,49 +277,23 @@
             renderCustomers(updated);
         }
 
-        // فتح مودال التعديل
-        let currentEditingId = null;
         function editCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             const customer = customers.find(c => c.id === id);
-            
             if (customer) {
-                currentEditingId = id;
-                document.getElementById('editName').value = customer.name;
-                document.getElementById('editPhone').value = customer.phone;
-                document.getElementById('editModal').style.display = 'flex';
+                const newName = prompt('الاسم الجديد:', customer.name);
+                const newPhone = prompt('رقم الهاتف الجديد:', customer.phone);
+                if (newName && newPhone) {
+                    customer.name = newName;
+                    customer.phone = newPhone;
+                    localStorage.setItem('customers', JSON.stringify(customers));
+                    renderCustomers(customers);
+                }
+            } else {
+                showError('الزبون غير موجود');
             }
         }
 
-        // حفظ التعديلات
-        function saveChanges() {
-            const newName = document.getElementById('editName').value.trim();
-            const newPhone = document.getElementById('editPhone').value.trim();
-            
-            if (!newName || !newPhone) {
-                showError('الرجاء تعبئة جميع الحقول');
-                return;
-            }
-
-            const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const customerIndex = customers.findIndex(c => c.id === currentEditingId);
-            
-            if (customerIndex !== -1) {
-                customers[customerIndex].name = newName;
-                customers[customerIndex].phone = newPhone;
-                localStorage.setItem('customers', JSON.stringify(customers));
-                renderCustomers(customers);
-                closeModal();
-            }
-        }
-
-        // إغلاق المودال
-        function closeModal() {
-            document.getElementById('editModal').style.display = 'none';
-            currentEditingId = null;
-        }
-
-        // اختيار الزبون
         function selectCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             const selected = customers.find(c => c.id === id);
@@ -453,7 +305,7 @@
             }
         }
 
-        // التحميل الأولي للبيانات
+        // التحميل الأولي
         window.addEventListener('DOMContentLoaded', () => {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             renderCustomers(customers);
