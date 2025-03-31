@@ -22,8 +22,8 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: #ff9f43;
             border-radius: 50%;
             display: flex;
@@ -35,7 +35,7 @@
         }
 
         .menu-toggle:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         /* القائمة المخفية */
@@ -58,7 +58,7 @@
         .sidebar h2 {
             color: #ff9f43;
             font-size: 24px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .sidebar a {
@@ -121,7 +121,7 @@
         /* الإحصائيات */
         .statistics {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             width: 100%;
             max-width: 1200px;
@@ -135,6 +135,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         .stat-card:hover {
@@ -160,6 +161,23 @@
             color: #fff;
         }
 
+        /* تصميم استجابي */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                right: 10px;
+                top: 10px;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .statistics {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* تأثيرات خلفية */
         .background {
             position: fixed;
@@ -169,18 +187,19 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
         }
 
         .background span {
             position: absolute;
-            font-size: 80px;
+            font-size: 40px;
             color: rgba(255, 159, 67, 0.3);
             animation: float 10s infinite ease-in-out;
         }
 
         @keyframes float {
             0% { transform: translate(0, 0); }
-            50% { transform: translate(30px, -40px); }
+            50% { transform: translate(15px, -20px); }
             100% { transform: translate(0, 0); }
         }
 
@@ -190,7 +209,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 120px;
+            font-size: 80px;
             color: #ff9f43;
             animation: spin 3s linear infinite;
         }
@@ -199,10 +218,35 @@
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
+
+        /* ألوان وخطوط */
+        body {
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        button {
+            padding: 15px 30px;
+            background: #ff9f43;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #ff6b35;
+        }
     </style>
 </head>
 <body>
-    <!-- الأيقونة الرئيسية للقائمة -->
+    <!-- الأيقونة الرئيسية -->
     <div class="menu-toggle" onclick="toggleMenu()">
         <span>☰</span>
     </div>
@@ -225,7 +269,7 @@
         <a href="invoice-search.html">
             <i>🔍</i> بحث عن فاتورة
         </a>
-        <a href="home.html">
+        <a href="index.html">
             <i>🚪</i> تسجيل خروج
         </a>
     </div>
@@ -257,7 +301,7 @@
             </div>
         </div>
 
-        <button onclick="refreshStats()" style="margin-top: 40px; padding: 20px 40px; background: #ff9f43; color: #1a1a1a; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;">
+        <button onclick="refreshStats()" style="margin-top: 40px; background: #ff9f43; color: #1a1a1a;">
             تحديث الإحصائيات
         </button>
     </div>
