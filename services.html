@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قائمة الزبائن - صالون الحلاقة</title>
+    <title>خدماتنا - صالون الحلاقة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,6 +14,7 @@
             --text-color: #FFFFFF;
             --hover-effect: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
@@ -21,7 +22,9 @@
             background: var(--background-gradient);
             color: var(--text-color);
             min-height: 100vh;
+            overflow-x: hidden;
         }
+
         /* القائمة الجانبية */
         .sidebar {
             position: fixed;
@@ -34,16 +37,23 @@
             transition: var(--hover-effect);
             z-index: 1000;
         }
+
         .sidebar.show {
             right: 0;
         }
+
         .sidebar-header {
             padding: 1.5rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
         .sidebar-nav {
             padding: 1rem;
         }
+
         .sidebar-link {
             display: block;
             padding: 0.8rem 1rem;
@@ -53,10 +63,12 @@
             border-radius: 8px;
             transition: var(--hover-effect);
         }
+
         .sidebar-link:hover {
             background: var(--primary-color);
             color: var(--secondary-color);
         }
+
         /* زر القائمة */
         .menu-toggle {
             position: fixed;
@@ -72,114 +84,136 @@
             box-shadow: 0 4px 12px rgba(255, 163, 67, 0.3);
             transition: var(--hover-effect);
             z-index: 1100;
+            border: none;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
         }
+
         .menu-toggle:hover {
             transform: rotate(90deg);
         }
+
         /* المحتوى الرئيسي */
         .main-content {
             padding: 6rem 1.5rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
-        /* شريط البحث */
-        .search-container {
-            position: relative;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .search-input {
-            width: 100%;
-            padding: 1rem 3rem 1rem 1rem;
-            background: var(--card-bg);
-            border: 2px solid transparent;
-            border-radius: 50px;
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: var(--hover-effect);
-        }
-        .search-input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
+
+        .service-title {
             color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
-        /* بطاقات الزبائن */
-        .customers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+        /* كاروسيل الخدمات */
+        .services-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
             gap: 1.5rem;
             padding: 1rem 0;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
-        .customer-card {
+
+        .service-card {
+            flex: 0 0 300px;
             background: var(--card-bg);
-            padding: 1.5rem;
+            border: 2px solid transparent;
             border-radius: 15px;
-            position: relative;
+            padding: 2rem;
+            scroll-snap-align: start;
             transition: var(--hover-effect);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            cursor: pointer;
         }
-        .customer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 163, 67, 0.2);
+
+        .service-card.active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(255, 163, 67, 0.3);
         }
-        .customer-actions {
+
+        .service-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .price-label {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        /* المودال المخصص */
+        .custom-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--secondary-color);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .selected-services-list {
+            max-height: 60vh;
+            overflow-y: auto;
+            margin: 1rem 0;
+        }
+
+        .service-item {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .service-actions {
             display: flex;
             gap: 0.5rem;
-            margin-top: 1.5rem;
-            justify-content: flex-start;
         }
-        .action-btn {
+
+        .modal-btn {
             padding: 0.5rem 1rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: var(--hover-effect);
-            font-weight: 600;
         }
-        .select-btn {
+
+        .confirm-btn {
             background: var(--primary-color);
             color: var(--secondary-color);
         }
-        .edit-btn {
-            background: #4CAF50;
+
+        .cancel-btn {
+            background: #666;
             color: white;
         }
-        .delete-btn {
-            background: #FF5252;
-            color: white;
-        }
-        /* رسائل الخطأ */
-        .error-message {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            background: #FF5252;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            opacity: 0;
-            transition: var(--hover-effect);
-            transform: translateY(100%);
-        }
-        .error-message.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+
         @media (max-width: 768px) {
             .main-content {
                 padding: 5rem 1rem 1rem;
             }
-            .menu-toggle {
-                top: 1rem;
-                right: 1rem;
+
+            .service-card {
+                flex: 0 0 250px;
             }
         }
     </style>
@@ -200,118 +234,143 @@
             <a href="index.html" class="sidebar-link">تسجيل خروج</a>
         </div>
     </nav>
+
     <!-- زر القائمة -->
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
     <!-- المحتوى الرئيسي -->
     <main class="main-content">
-        <h1 class="page-title">إدارة الزبائن</h1>
-        <!-- شريط البحث -->
-        <div class="search-container">
-            <input type="text"
-                   class="search-input"
-                   placeholder="ابحث باسم الزبون أو رقم الهاتف..."
-                   oninput="filterCustomers()">
-            <span class="search-icon">🔍</span>
+        <h1 class="service-title">خدماتنا</h1>
+
+        <div class="services-carousel" id="carousel">
+            <!-- سيتم إضافة البطاقات ديناميكيًا -->
         </div>
-        <!-- قائمة الزبائن -->
-        <div class="customers-grid" id="customersList"></div>
+
+        <button class="modal-btn confirm-btn" onclick="selectService()" style="margin-top: 2rem;">
+            إضافة خدمة
+        </button>
     </main>
-    <!-- رسالة الخطأ -->
-    <div class="error-message" id="errorMessage"></div>
+
+    <!-- مودال الخدمات المختارة -->
+    <div class="custom-modal" id="editModal">
+        <div class="modal-content">
+            <h2>الخدمات المختارة</h2>
+            <div class="selected-services-list" id="selectedServices"></div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" onclick="closeEditModal()">إغلاق</button>
+                <button class="modal-btn confirm-btn" onclick="proceedToPayment()">إتمام الحجز</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // إدارة حالة القائمة الجانبية
+        // بيانات الخدمات
+        const services = [
+            { name: "حلاقة الوجه والرأس", price: "30 درهم" },
+            { name: "حلاقة الرأس", price: "20 درهم" },
+            { name: "حلاقة الوجه العادي", price: "10 درهم" },
+            { name: "حلاقة الوجه بالكريدي وطرساج", price: "15 درهم" },
+            { name: "حلاقة الأطفال", price: "15 درهم" },
+            { name: "غسل الشعر", price: "10 درهم" },
+            { name: "ترطيب الشعر", price: "60 درهم" },
+            { name: "تنظيف الوجه بالكامل", price: "70 درهم" },
+            { name: "بروشنغ", price: "10 درهم" },
+            { name: "صباغة الرأس", price: "50 درهم" },
+            { name: "ماسك أسود", price: "40 درهم" }
+        ];
+
+        // تهيئة الخدمات
+        function initServices() {
+            const carousel = document.getElementById('carousel');
+            carousel.innerHTML = services.map((service, index) => `
+                <div class="service-card ${index === 0 ? 'active' : ''}" 
+                     data-index="${index}"
+                     onclick="selectCard(${index})">
+                    <p class="service-label">${service.name}</p>
+                    <p class="price-label">${service.price}</p>
+                </div>
+            `).join('');
+        }
+
+        // اختيار البطاقة
+        let selectedIndex = 0;
+        function selectCard(index) {
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            selectedIndex = index;
+            document.querySelector(`.service-card[data-index="${index}"]`).classList.add('active');
+            
+            // تمرير سلس للبطاقة المختارة
+            const card = document.querySelector(`.service-card[data-index="${index}"]`);
+            card.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
+        }
+
+        // إدارة القائمة الجانبية
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('show');
         }
 
-        // عرض بيانات الزبائن
-        function renderCustomers(customers) {
-            const container = document.getElementById('customersList');
-            container.innerHTML = customers.map(customer => `
-                <article class="customer-card">
-                    <h3>${customer.name}</h3>
-                    <p>📱 ${customer.phone}</p>
-                    <div class="customer-actions">
-                        <button class="action-btn edit-btn"
-                                onclick="editCustomer(${customer.id})">
-                            تعديل
-                        </button>
-                        <button class="action-btn delete-btn"
-                                onclick="deleteCustomer(${customer.id})">
-                            حذف
-                        </button>
-                        <button class="action-btn select-btn"
-                                onclick="selectCustomer(${customer.id})">
-                            اختيار
-                        </button>
+        // إضافة خدمة
+        function selectService() {
+            const selectedService = services[selectedIndex];
+            let selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            selected.push(selectedService);
+            localStorage.setItem('selectedServices', JSON.stringify(selected));
+            updateSelectedServices();
+            openEditModal();
+        }
+
+        // تحديث الخدمات المختارة
+        function updateSelectedServices() {
+            const selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            const container = document.getElementById('selectedServices');
+            container.innerHTML = selected.map((service, index) => `
+                <div class="service-item">
+                    <div>
+                        <p class="service-label">${service.name}</p>
+                        <p class="price-label">${service.price}</p>
                     </div>
-                </article>
+                    <div class="service-actions">
+                        <button class="modal-btn cancel-btn" onclick="deleteService(${index})">حذف</button>
+                    </div>
+                </div>
             `).join('');
         }
 
-        // فلترة الزبائن
-        function filterCustomers() {
-            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
-            const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const filtered = customers.filter(c => 
-                c.name.toLowerCase().includes(searchTerm) || 
-                c.phone.includes(searchTerm)
-            );
-            renderCustomers(filtered);
+        // فتح المودال
+        function openEditModal() {
+            document.getElementById('editModal').style.display = 'flex';
+            updateSelectedServices();
         }
 
-        // إدارة الأخطاء
-        function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.textContent = message;
-            errorEl.classList.add('active');
-            setTimeout(() => errorEl.classList.remove('active'), 3000);
+        // إغلاق المودال
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
         }
 
-        // عمليات CRUD
-        function deleteCustomer(id) {
-            const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const updated = customers.filter(c => c.id !== id);
-            localStorage.setItem('customers', JSON.stringify(updated));
-            renderCustomers(updated);
+        // حذف الخدمة
+        function deleteService(index) {
+            let selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            selected.splice(index, 1);
+            localStorage.setItem('selectedServices', JSON.stringify(selected));
+            updateSelectedServices();
         }
 
-        function editCustomer(id) {
-            const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const customer = customers.find(c => c.id === id);
-
-            if (customer) {
-                const newName = prompt('الاسم الجديد:', customer.name);
-                const newPhone = prompt('رقم الهاتف الجديد:', customer.phone);
-
-                if (newName && newPhone) {
-                    customer.name = newName;
-                    customer.phone = newPhone;
-                    localStorage.setItem('customers', JSON.stringify(customers));
-                    renderCustomers(customers);
-                }
-            } else {
-                showError('الزبون غير موجود');
-            }
+        // إتمام الحجز
+        function proceedToPayment() {
+            // إضافة منطق إتمام الحجز هنا
+            alert('سيتم تنفيذ عملية الدفع...'); // يمكن استبدالها بمودال دفع مخصص
         }
 
-        function selectCustomer(id) {
-            const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const selected = customers.find(c => c.id === id);
-
-            if (selected) {
-                localStorage.setItem('selectedCustomer', JSON.stringify(selected));
-                window.location.href = 'services.html';
-            } else {
-                showError('الزبون غير موجود');
-            }
-        }
-
-        // التحميل الأولي
+        // التهيئة الأولية
         window.addEventListener('DOMContentLoaded', () => {
-            const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            renderCustomers(customers);
+            initServices();
+            updateSelectedServices();
         });
     </script>
 </body>
