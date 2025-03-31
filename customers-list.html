@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>قائمة الزبائن</title>
+    <title>عرض الزبائن</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         /* التصميم العام */
@@ -122,7 +122,6 @@
             border: none;
             border-radius: 20px;
             color: #fff;
-            font-size: 16px;
             text-align: right;
         }
 
@@ -191,6 +190,20 @@
             background: #ff6b35;
         }
 
+        /* رسالة الخطأ */
+        .error {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: right;
+        }
+
+        .error.active {
+            opacity: 1;
+        }
+
         /* تصميم الخلفية */
         .background {
             position: fixed;
@@ -228,27 +241,18 @@
                 font-size: 14px;
             }
 
-            .main-content {
-                padding: 20px 10px;
-            }
-
-            .customer-card {
+            form {
                 padding: 20px;
-                min-width: 100%;
             }
 
-            .customer-card h3 {
-                font-size: 18px;
-            }
-
-            .customer-card p {
+            form input {
+                padding: 10px;
                 font-size: 14px;
             }
-        }
 
-        @media (max-width: 480px) {
-            .customers-list {
-                grid-template-columns: 1fr;
+            form button {
+                padding: 10px 20px;
+                font-size: 14px;
             }
         }
     </style>
@@ -296,15 +300,9 @@
         }
 
         // عرض الزبائن من localStorage
-        function renderCustomers() {
-            const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const filtered = customers.filter(cust => 
-                cust.name.toLowerCase().includes(document.getElementById('searchInput').value.toLowerCase()) ||
-                cust.phone.includes(document.getElementById('searchInput').value)
-            );
-
+        function renderCustomers(customers) {
             const list = document.getElementById('customersList');
-            list.innerHTML = filtered.map(cust => `
+            list.innerHTML = customers.map(cust => `
                 <div class="customer-card">
                     <h3>${cust.name}</h3>
                     <p>رقم الهاتف: ${cust.phone}</p>
@@ -316,23 +314,44 @@
             `).join('');
         }
 
-        // تحديث القائمة عند تغيير مربع البحث
-        document.getElementById('searchInput').addEventListener('input', renderCustomers);
+        // تحديث القائمة عند تحميل الصفحة
+        window.onload = function() {
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            renderCustomers(customers);
+        };
 
-        // عرض الزبائن عند تحميل الصفحة
-        window.onload = renderCustomers;
+        // مربع البحث
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            const filtered = customers.filter(cust => 
+                cust.name.toLowerCase().includes(term) || 
+                cust.phone.includes(term)
+            );
+            renderCustomers(filtered);
+        });
 
         // حذف زبون
         function deleteCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             const newCustomers = customers.filter(cust => cust.id !== id);
             localStorage.setItem('customers', JSON.stringify(newCustomers));
-            renderCustomers();
+            renderCustomers(newCustomers);
         }
 
-        // تعديل زبون (توجيه إلى صفحة تعديل)
+        // تعديل زبون
         function editCustomer(id) {
             window.location.href = `customer-edit.html?id=${id}`;
+        }
+
+        // رسالة الخطأ (بدون alert)
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('active');
+            setTimeout(() => {
+                errorMessage.classList.remove('active');
+            }, 3000);
         }
     </script>
 </body>
