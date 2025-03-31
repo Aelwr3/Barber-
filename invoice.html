@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>الفاتورة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فاتورة الخدمات - صالون الحلاقة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,6 +14,7 @@
             --text-color: #FFFFFF;
             --hover-effect: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
@@ -22,305 +23,210 @@
             color: var(--text-color);
             min-height: 100vh;
         }
-        /* القائمة الجانبية */
-        .sidebar {
-            position: fixed;
-            right: -300px;
-            top: 0;
-            width: 280px;
-            height: 100%;
-            background: var(--secondary-color);
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-            transition: var(--hover-effect);
-            z-index: 1000;
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
         }
-        .sidebar.show {
-            right: 0;
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
         }
-        .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        .invoice-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin: 0;
         }
-        .sidebar-nav {
+
+        .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .info-box {
+            background: var(--card-bg);
             padding: 1rem;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 200px;
         }
-        .sidebar-link {
-            display: block;
-            padding: 0.8rem 1rem;
-            margin: 0.5rem 0;
-            color: var(--text-color);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: var(--hover-effect);
+
+        .services-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
         }
-        .sidebar-link:hover {
-            background: var(--primary-color);
+
+        .services-table th,
+        .services-table td {
+            padding: 1rem;
+            text-align: right;
+        }
+
+        .services-table th {
+            background-color: var(--primary-color);
             color: var(--secondary-color);
         }
-        /* زر القائمة */
-        .menu-toggle {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: var(--primary-color);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255, 163, 67, 0.3);
-            transition: var(--hover-effect);
-            z-index: 1100;
+
+        .services-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
         }
-        .menu-toggle:hover {
-            transform: rotate(90deg);
-        }
-        /* المحتوى الرئيسي */
-        .main-content {
-            padding: 6rem 1.5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        /* شريط البحث */
-        .search-container {
-            position: relative;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .search-input {
-            width: 100%;
-            padding: 1rem 3rem 1rem 1rem;
-            background: var(--card-bg);
-            border: 2px solid transparent;
-            border-radius: 50px;
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: var(--hover-effect);
-        }
-        .search-input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-        }
-        /* بطاقات الفواتير */
-        .invoices-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem 0;
-        }
-        .invoice-card {
-            background: var(--card-bg);
+
+        .total-section {
+            text-align: left;
+            margin-top: 2rem;
             padding: 1.5rem;
-            border-radius: 15px;
-            position: relative;
-            transition: var(--hover-effect);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--card-bg);
+            border-radius: 10px;
         }
-        .invoice-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 163, 67, 0.2);
-        }
-        .invoice-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            justify-content: flex-start;
-        }
-        .action-btn {
-            padding: 0.5rem 1rem;
+
+        .print-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: var(--secondary-color);
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: var(--hover-effect);
-            font-weight: 600;
+            text-decoration: none;
+            margin-top: 2rem;
         }
-        .pay-btn {
-            background: #4CAF50;
-            color: white;
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 163, 67, 0.3);
         }
-        .edit-btn {
-            background: var(--primary-color);
-            color: var(--secondary-color);
-        }
-        .cancel-btn {
-            background: #FF5252;
-            color: white;
-        }
-        /* رسائل الخطأ */
-        .error-message {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            background: #FF5252;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            opacity: 0;
-            transition: var(--hover-effect);
-            transform: translateY(100%);
-        }
-        .error-message.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 5rem 1rem 1rem;
+
+        @media print {
+            body {
+                background: white;
+                color: black;
             }
-            .menu-toggle {
-                top: 1rem;
-                right: 1rem;
+            
+            .print-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .invoice-info {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <!-- القائمة الجانبية -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h2>صالون الحلاقة</h2>
-            <span class="close-btn" onclick="toggleMenu()">×</span>
+    <div class="container">
+        <header class="invoice-header">
+            <h1 class="invoice-title">فاتورة خدمات صالون الحلاقة</h1>
+        </header>
+
+        <section class="invoice-info">
+            <div class="info-box">
+                <h3>معلومات العميل:</h3>
+                <p id="customerName">الاسم: غير محدد</p>
+                <p id="customerPhone">الهاتف: غير محدد</p>
+            </div>
+
+            <div class="info-box">
+                <h3>معلومات الفاتورة:</h3>
+                <p id="invoiceDate">التاريخ: </p>
+                <p id="invoiceNumber">رقم الفاتورة: </p>
+            </div>
+        </section>
+
+        <table class="services-table">
+            <thead>
+                <tr>
+                    <th>الخدمة</th>
+                    <th>السعر</th>
+                </tr>
+            </thead>
+            <tbody id="invoiceServices">
+                <!-- تظهر الخدمات هنا -->
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <h2>المجموع الكلي: <span id="totalAmount">0</span> درهم</h2>
         </div>
-        <div class="sidebar-nav">
-            <a href="dashboard.html" class="sidebar-link">لوحة التحكم</a>
-            <a href="customer-selection.html" class="sidebar-link">إضافة زبون</a>
-            <a href="customers-list.html" class="sidebar-link">عرض الزبائن</a>
-            <a href="invoices.html" class="sidebar-link">إدارة الفواتير</a>
-            <a href="invoice-search.html" class="sidebar-link">بحث متقدم</a>
-            <a href="index.html" class="sidebar-link">تسجيل خروج</a>
-        </div>
-    </nav>
-    <!-- زر القائمة -->
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <!-- المحتوى الرئيسي -->
-    <main class="main-content">
-        <h1 class="page-title">الفواتير</h1>
-        <!-- شريط البحث -->
-        <div class="search-container">
-            <input type="text"
-                   class="search-input"
-                   placeholder="ابحث برقم الفاتورة..."
-                   oninput="filterInvoices()">
-            <span class="search-icon">🔍</span>
-        </div>
-        <!-- قائمة الفواتير -->
-        <div class="invoices-grid" id="invoicesList"></div>
-    </main>
-    <!-- رسالة الخطأ -->
-    <div class="error-message" id="errorMessage"></div>
+
+        <a href="javascript:window.print()" class="print-btn">طباعة الفاتورة</a>
+    </div>
 
     <script>
-        // إدارة حالة القائمة الجانبية
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('show');
+        // توليد رقم فاتورة عشوائي
+        function generateInvoiceNumber() {
+            return 'INV-' + Date.now().toString().slice(-6);
         }
 
-        // عرض الفواتير
-        function renderInvoices(invoices) {
-            const container = document.getElementById('invoicesList');
-            container.innerHTML = invoices.map(invoice => `
-                <article class="invoice-card">
-                    <h3>رقم الفاتورة: ${invoice.id}</h3>
-                    <p>الزبون: ${invoice.customerName}</p>
-                    <p>الخدمات: ${invoice.services.map(service => service.name).join(', ')}</p>
-                    <p>الإجمالي: ${invoice.totalPrice} ريال</p>
-                    <p>الحالة: ${invoice.status}</p>
-                    <div class="invoice-actions">
-                        <button class="action-btn pay-btn"
-                                onclick="payInvoice(${invoice.id})">
-                            مدفوعة
-                        </button>
-                        <button class="action-btn edit-btn"
-                                onclick="editInvoice(${invoice.id})">
-                            تعديل
-                        </button>
-                        <button class="action-btn cancel-btn"
-                                onclick="cancelInvoice(${invoice.id})">
-                            إلغاء
-                        </button>
-                    </div>
-                </article>
+        // تنسيق التاريخ
+        function getFormattedDate() {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return new Date().toLocaleDateString('ar-EG', options);
+        }
+
+        // حساب المجموع الكلي
+        function calculateTotal(services) {
+            return services.reduce((total, service) => {
+                const price = parseInt(service.price.match(/\d+/)[0]);
+                return total + price;
+            }, 0);
+        }
+
+        // عرض بيانات الفاتورة
+        function renderInvoice() {
+            // جلب البيانات من localStorage
+            const selectedServices = JSON.parse(localStorage.getItem('selectedServices')) || [];
+            const selectedCustomer = JSON.parse(localStorage.getItem('selectedCustomer')) || {};
+
+            // عرض بيانات العميل
+            if(selectedCustomer.name) {
+                document.getElementById('customerName').textContent = `الاسم: ${selectedCustomer.name}`;
+                document.getElementById('customerPhone').textContent = `الهاتف: ${selectedCustomer.phone}`;
+            }
+
+            // عرض الخدمات
+            const servicesBody = document.getElementById('invoiceServices');
+            servicesBody.innerHTML = selectedServices.map(service => `
+                <tr>
+                    <td>${service.name}</td>
+                    <td>${service.price}</td>
+                </tr>
             `).join('');
-        }
 
-        // فلترة الفواتير
-        function filterInvoices() {
-            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
-            const invoices = JSON.parse(localStorage.getItem('invoices')) || [];
-            const filtered = invoices.filter(inv => 
-                inv.id.toString().includes(searchTerm) || 
-                inv.customerName.toLowerCase().includes(searchTerm) || 
-                inv.services.some(service => service.name.toLowerCase().includes(searchTerm))
-            );
-            renderInvoices(filtered);
-        }
+            // عرض المجموع
+            document.getElementById('totalAmount').textContent = calculateTotal(selectedServices);
 
-        // إدارة الأخطاء
-        function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.textContent = message;
-            errorEl.classList.add('active');
-            setTimeout(() => errorEl.classList.remove('active'), 3000);
-        }
-
-        // عمليات الفواتير
-        function payInvoice(id) {
-            const invoices = JSON.parse(localStorage.getItem('invoices')) || [];
-            const invoice = invoices.find(i => i.id === id);
-            if (invoice) {
-                invoice.status = 'مدفوعة';
-                localStorage.setItem('invoices', JSON.stringify(invoices));
-                renderInvoices(invoices);
-            } else {
-                showError('الفاتورة غير موجودة');
-            }
-        }
-
-        function editInvoice(id) {
-            const invoices = JSON.parse(localStorage.getItem('invoices')) || [];
-            const invoice = invoices.find(i => i.id === id);
-            if (invoice) {
-                invoice.services.forEach(service => {
-                    const newPrice = prompt('السعر الجديد للخدمة:', service.price);
-                    if (newPrice) {
-                        service.price = newPrice;
-                    }
-                });
-                invoice.totalPrice = invoice.services.reduce((total, service) => total + parseFloat(service.price), 0);
-                localStorage.setItem('invoices', JSON.stringify(invoices));
-                renderInvoices(invoices);
-            } else {
-                showError('الفاتورة غير موجودة');
-            }
-        }
-
-        function cancelInvoice(id) {
-            const invoices = JSON.parse(localStorage.getItem('invoices')) || [];
-            const invoiceIndex = invoices.findIndex(i => i.id === id);
-            if (invoiceIndex !== -1) {
-                invoices.splice(invoiceIndex, 1);
-                localStorage.setItem('invoices', JSON.stringify(invoices));
-                renderInvoices(invoices);
-            } else {
-                showError('الفاتورة غير موجودة');
-            }
+            // معلومات الفاتورة
+            document.getElementById('invoiceDate').textContent = `التاريخ: ${getFormattedDate()}`;
+            document.getElementById('invoiceNumber').textContent = `رقم الفاتورة: ${generateInvoiceNumber()}`;
         }
 
         // التحميل الأولي
-        window.addEventListener('DOMContentLoaded', () => {
-            const invoices = JSON.parse(localStorage.getItem('invoices')) || [];
-            renderInvoices(invoices);
-        });
+        window.addEventListener('DOMContentLoaded', renderInvoice);
     </script>
 </body>
 </html>
