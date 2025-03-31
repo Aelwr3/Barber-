@@ -254,8 +254,8 @@
         function filterCustomers() {
             const searchTerm = document.querySelector('.search-input').value.toLowerCase();
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
-            const filtered = customers.filter(c =>
-                c.name.toLowerCase().includes(searchTerm) ||
+            const filtered = customers.filter(c => 
+                c.name.toLowerCase().includes(searchTerm) || 
                 c.phone.includes(searchTerm)
             );
             renderCustomers(filtered);
@@ -280,9 +280,11 @@
         function editCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             const customer = customers.find(c => c.id === id);
+
             if (customer) {
                 const newName = prompt('الاسم الجديد:', customer.name);
                 const newPhone = prompt('رقم الهاتف الجديد:', customer.phone);
+
                 if (newName && newPhone) {
                     customer.name = newName;
                     customer.phone = newPhone;
@@ -297,6 +299,7 @@
         function selectCustomer(id) {
             const customers = JSON.parse(localStorage.getItem('customers')) || [];
             const selected = customers.find(c => c.id === id);
+
             if (selected) {
                 localStorage.setItem('selectedCustomer', JSON.stringify(selected));
                 window.location.href = 'services.html';
