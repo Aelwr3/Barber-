@@ -121,7 +121,7 @@
             width: 300px;
             height: 300px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+            border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
@@ -134,7 +134,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 50%;
+            border-radius: 20px;
             position: absolute;
             top: 0;
             left: 0;
@@ -151,7 +151,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            border-radius: 20px;
             transition: all 0.3s ease;
             opacity: 0;
         }
@@ -165,6 +165,26 @@
             font-size: 18px;
             color: #fff;
             margin: 10px 0;
+        }
+
+        /* الزر المربع والمستطيل */
+        .carousel .card.active {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff9f43;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(255, 159, 67, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .carousel .card.active .service-label {
+            font-size: 24px;
+            color: #ff9f43;
+            font-weight: bold;
+        }
+
+        .carousel .card.active .price-label {
+            font-size: 18px;
+            color: #fff;
         }
 
         /* الأزرار في الأسفل */
@@ -231,25 +251,77 @@
             background: #ff6b35;
         }
 
+        .modal-content div {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff9f43;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(255, 159, 67, 0.4);
+            padding: 20px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content div p {
+            font-size: 18px;
+            color: #fff;
+            margin: 10px 0;
+        }
+
+        .modal-content div button {
+            padding: 8px 15px;
+            background: #ff9f43;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content div button:hover {
+            background: #ff6b35;
+        }
+
         /* تصميم متجاوب */
         @media (max-width: 768px) {
+            .menu-toggle {
+                top: 10px;
+                right: 10px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .sidebar {
+                padding: 15px;
+            }
+
+            .sidebar a {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            form input {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            form button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
             .carousel {
                 width: 100%;
                 height: 200px;
             }
 
-            .action-buttons {
-                width: 100%;
-                flex-direction: column;
-            }
-
-            .action-buttons button {
-                margin-top: 10px;
-            }
-
-            .modal {
-                width: 90%;
-                max-width: 400px;
+            .carousel .card {
+                font-size: 16px;
             }
         }
     </style>
@@ -282,48 +354,48 @@
         <!-- البطاقات الديناميكية -->
         <div class="carousel" id="carousel">
             <div class="card active" data-name="حلاقة الوجه والرأس" data-price="30 درهم">
-                <p>حلاقة الوجه والرأس</p>
-                <p>30 درهم</p>
+                <p class="service-label">حلاقة الوجه والرأس</p>
+                <p class="price-label">30 درهم</p>
             </div>
             <div class="card" data-name="حلاقة الرأس" data-price="20 درهم">
-                <p>حلاقة الرأس</p>
-                <p>20 درهم</p>
+                <p class="service-label">حلاقة الرأس</p>
+                <p class="price-label">20 درهم</p>
             </div>
             <div class="card" data-name="حلاقة الوجه العادي" data-price="10 درهم">
-                <p>حلاقة الوجه العادي</p>
-                <p>10 درهم</p>
+                <p class="service-label">حلاقة الوجه العادي</p>
+                <p class="price-label">10 درهم</p>
             </div>
             <div class="card" data-name="حلاقة الوجه بالكريدي وطرساج" data-price="15 درهم">
-                <p>حلاقة الوجه بالكريدي وطرساج</p>
-                <p>15 درهم</p>
+                <p class="service-label">حلاقة الوجه بالكريدي وطرساج</p>
+                <p class="price-label">15 درهم</p>
             </div>
             <div class="card" data-name="حلاقة الأطفال" data-price="15 درهم">
-                <p>حلاقة الأطفال</p>
-                <<p>15 درهم</p>
+                <p class="service-label">حلاقة الأطفال</p>
+                <<p class="price-label">15 درهم</p>
             </div>
             <div class="card" data-name="غسل الشعر" data-price="10 درهم">
-                <p>غسل الشعر</p>
-                <p>10 درهم</p>
+                <p class="service-label">غسل الشعر</p>
+                <p class="price-label">10 درهم</p>
             </div>
             <div class="card" data-name="ترطيب الشعر" data-price="60 درهم">
-                <p>ترطيب الشعر</p>
-                <p>60 درهم</p>
+                <p class="service-label">ترطيب الشعر</p>
+                <p class="price-label">60 درهم</p>
             </div>
             <div class="card" data-name="تنظيف الوجه بالكامل" data-price="70 درهم">
-                <p>تنظيف الوجه بالكامل</p>
-                <p>70 درهم</p>
+                <p class="service-label">تنظيف الوجه بالكامل</p>
+                <p class="price-label">70 درهم</p>
             </div>
             <div class="card" data-name="بروشنغ" data-price="10 درهم">
-                <p>بروشنغ</p>
-                <p>10 درهم</p>
+                <p class="service-label">بروشنغ</p>
+                <p class="price-label">10 درهم</p>
             </div>
             <div class="card" data-name="صباغة الرأس" data-price="50 درهم">
-                <p>صباغة الرأس</p>
-                <p>50 درهم</p>
+                <p class="service-label">صباغة الرأس</p>
+                <p class="price-label">50 درهم</p>
             </div>
             <div class="card" data-name="ماسك أسود" data-price="40 درهم">
-                <p>ماسك أسود</p>
-                <p>40 درهم</p>
+                <p class="service-label">ماسك أسود</p>
+                <p class="price-label">40 درهم</p>
             </div>
         </div>
 
@@ -332,14 +404,14 @@
             <button onclick="confirmSelection()">تأكيد</button>
             <button onclick="openEditModal()">تعديل</button>
         </div>
-    </div>
 
-    <!-- الصفحة المنبثقة -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <h2>خدماتك المختارة</h2>
-            <div id="selectedServices"></div>
-            <button onclick="closeEditModal()">إغلاق</button>
+        <!-- الصفحة المنبثقة -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <h2>خدماتك المختارة</h2>
+                <div id="selectedServices"></div>
+                <button onclick="closeEditModal()">إغلاق</button>
+            </div>
         </div>
     </div>
 
@@ -441,9 +513,9 @@
         function editService(index) {
             const modalContent = document.getElementById('selectedServices');
             const serviceItem = modalContent.querySelector(`#service-${index}`);
-            const newName = prompt('أدخل اسم الخدمة:');
-            const newPrice = prompt('أدخل سعر الخدمة:');
-            
+            const newName = prompt('أدخل اسم الخدمة:', serviceItem.querySelector('p').innerText.split('-')[0].trim());
+            const newPrice = prompt('أدخل سعر الخدمة:', serviceItem.querySelector('p').innerText.split('-')[1].trim());
+
             if (newName && newPrice) {
                 const selected = JSON.parse(localStorage.getItem('selectedServices')) || [];
                 selected[index].name = newName;
