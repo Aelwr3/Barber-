@@ -1,159 +1,165 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>تعديل بيانات الزبون</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-/* نسخ التصميمات من dashboard.html */
-body {
-font-family: 'Cairo', sans-serif;
-margin: 0;
-padding: 0;
-background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-color: #fff;
-min-height: 100vh;
-overflow-x: hidden;
-touch-action: pan-y;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تعديل بيانات الزبون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* نسخ التصميمات الأساسية من dashboard.html */
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
 
-.menu-toggle {
-position: fixed;
-top: 20px;
-right: 20px;
-width: 50px;
-height: 50px;
-background: #ff9f43;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
-transition: all 0.3s ease;
-z-index: 1000;
-}
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #ff9f43;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 159, 67, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
 
-/* باقي التصميمات */
-.main-content {
-padding: 40px 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-}
+        /* الجزء الرئيسي */
+        .main-content {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-form {
-width: 100%;
-max-width: 600px;
-padding: 30px;
-background: rgba(255, 255, 255, 0.1);
-border-radius: 20px;
-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-margin-top: 40px;
-}
+        form {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+            text-align: right;
+        }
 
-form input {
-width: 100%;
-padding: 12px;
-margin: 10px 0;
-background: rgba(255, 255, 255, 0.1);
-border: none;
-border-radius: 8px;
-color: #fff;
-}
+        form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            text-align: right;
+        }
 
-form button {
-margin-top: 20px;
-padding: 12px 24px;
-background: #ff9f43;
-color: #1a1a1a;
-border: none;
-border-radius: 12px;
-cursor: pointer;
-transition: all 0.3s ease;
-}
+        form button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #ff9f43;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-form button:hover {
-background: #ff6b35;
-}
-</style>
+        form button:hover {
+            background: #ff6b35;
+        }
+    </style>
 </head>
 <body>
-<!-- الأيقونة والقائمة -->
-<div class="menu-toggle" onclick="toggleMenu()">
-<span>☰</span>
-</div>
+    <!-- الخلفية -->
+    <div class="background"></div>
 
-<div class="sidebar" id="sidebar">
-<span class="close-btn" onclick="toggleMenu()">×</span>
-<h2>إدارة صالون الحلاقة</h2>
-<a href="dashboard.html">لوحة التحكم</a>
-<a href="customer-selection.html">إضافة زبون</a>
-<a href="services.html">إدارة الخدمات</a>
-<a href="invoices.html">إدارة الفواتير</a>
-<a href="invoice-search.html">بحث عن فاتورة</a>
-<a href="index.html">تسجيل خروج</a>
-</div>
+    <!-- الأيقونة الرئيسية -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <span>☰</span>
+    </div>
 
-<div class="main-content">
-<h1 style="color: #ff9f43; text-align: center; margin-bottom: 40px;">تعديل بيانات الزبون</h1>
+    <!-- القائمة المخفية -->
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleMenu()">×</span>
+        <h2>إدارة صالون الحلاقة</h2>
+        <a href="dashboard.html">لوحة التحكم</a>
+        <a href="customer-selection.html">إضافة زبون</a>
+        <a href="services.html">إدارة الخدمات</a>
+        <a href="invoices.html">إدارة الفواتير</a>
+        <a href="invoice-search.html">بحث عن فاتورة</a>
+        <a href="index.html">تسجيل خروج</a>
+    </div>
 
-<form onsubmit="updateCustomer(event)">
-<input type="hidden" id="customerId">
-<div class="input-group">
-<label for="customerName">اسم الزبون:</label>
-<input type="text" id="customerName" required>
-</div>
+    <div class="main-content">
+        <h1 style="color: #ff9f43; text-align: right; margin-bottom: 40px;">تعديل بيانات الزبون</h1>
 
-<div class="input-group">
-<label for="customerPhone">رقم الهاتف:</label>
-<input type="tel" id="customerPhone" required>
-</div>
+        <form onsubmit="updateCustomer(event)">
+            <input type="hidden" id="customerId">
+            <div class="input-group">
+                <label for="customerName">اسم الزبون:</label>
+                <input type="text" id="customerName" required>
+            </div>
 
-<button type="submit">حفظ التعديلات</button>
-</form>
-</div>
+            <div class="input-group">
+                <label for="customerPhone">رقم الهاتف:</label>
+                <input type="tel" id="customerPhone" required>
+            </div>
 
-<script>
-// تفعيل القائمة المخفية
-function toggleMenu() {
-const sidebar = document.getElementById('sidebar');
-sidebar.classList.toggle('show');
-}
+            <button type="submit" style="margin-top: 20px;">حفظ التعديلات</button>
+        </form>
+    </div>
 
-// استرداد بيانات الزبون من localStorage
-window.onload = function() {
-const customerId = new URLSearchParams(window.location.search).get('id');
-const customers = JSON.parse(localStorage.getItem('customers')) || [];
-const cust = customers.find(c => c.id == customerId);
+    <script>
+        // تفعيل القائمة المخفية
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        }
 
-if (cust) {
-document.getElementById('customerId').value = cust.id;
-document.getElementById('customerName').value = cust.name;
-document.getElementById('customerPhone').value = cust.phone;
-}
-}
+        // استرداد بيانات الزبون
+        window.onload = function() {
+            const customerId = new URLSearchParams(window.location.search).get('id');
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            const cust = customers.find(c => c.id == customerId);
 
-// حفظ التعديلات
-function updateCustomer(event) {
-event.preventDefault();
+            if (cust) {
+                document.getElementById('customerId').value = cust.id;
+                document.getElementById('customerName').value = cust.name;
+                document.getElementById('customerPhone').value = cust.phone;
+            }
+        }
 
-const id = document.getElementById('customerId').value;
-const name = document.getElementById('customerName').value;
-const phone = document.getElementById('customerPhone').value;
+        // حفظ التعديلات
+        function updateCustomer(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('customerId').value;
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
 
-const customers = JSON.parse(localStorage.getItem('customers')) || [];
-const index = customers.findIndex(c => c.id == id);
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            const index = customers.findIndex(cust => cust.id == id);
 
-if (index !== -1) {
-customers[index].name = name;
-customers[index].phone = phone;
-localStorage.setItem('customers', JSON.stringify(customers));
-alert('تم التعديل بنجاح!');
-window.location.href = 'customers-list.html';
-}
-}
-</script>
+            if (index !== -1) {
+                customers[index].name = name;
+                customers[index].phone = phone;
+                localStorage.setItem('customers', JSON.stringify(customers));
+                alert('تم التعديل بنجاح!');
+                window.location.href = 'customers-list.html';
+            }
+        }
+    </script>
 </body>
 </html>
