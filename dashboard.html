@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         /* تصميمات عامة */
         body {
@@ -13,6 +13,8 @@
             padding: 0;
             background: #1a1a1a;
             color: #fff;
+            overflow: hidden;
+            height: 100vh;
         }
 
         /* شريط الجانبي */
@@ -20,26 +22,30 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: 250px;
+            width: 300px;
             height: 100%;
-            background: #2a2a2a;
-            padding: 20px;
+            background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+            padding: 30px;
             transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 159, 67, 0.3);
         }
 
         .sidebar h2 {
             color: #ff9f43;
-            margin-bottom: 30px;
+            font-size: 24px;
+            margin-bottom: 40px;
         }
 
         .sidebar a {
-            display: block;
-            padding: 15px;
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
             color: #fff;
             text-decoration: none;
             margin: 10px 0;
-            border-radius: 8px;
+            border-radius: 12px;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .sidebar a:hover {
@@ -47,84 +53,195 @@
             color: #1a1a1a;
         }
 
+        .sidebar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: rgba(255, 159, 67, 0.2);
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover::before {
+            transform: scale(1);
+        }
+
+        /* الأيقونات */
+        .sidebar i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #ff9f43;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover i {
+            transform: translateX(5px);
+        }
+
         /* الجزء الرئيسي */
         .main-content {
-            margin-right: 250px;
-            padding: 30px;
+            margin-right: 300px;
+            padding: 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         /* الإحصائيات */
         .statistics {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
         }
 
-        .stat {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            text-align: center;
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(255, 159, 67, 0.4);
+        }
+
+        .stat-card .emoji {
+            font-size: 48px;
             color: #ff9f43;
+            margin-bottom: 20px;
         }
 
-        .stat h3 {
+        .stat-card h3 {
+            color: #ff9f43;
+            font-size: 20px;
             margin-bottom: 10px;
         }
 
-        .stat span {
-            font-size: 2em;
+        .stat-card span {
+            font-size: 36px;
             font-weight: 600;
+            color: #fff;
         }
 
-        /* أيموجي */
-        .emoji {
-            font-size: 1.5em;
-            margin-left: 5px;
+        /* تأثيرات خلفية */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .background span {
+            position: absolute;
+            font-size: 60px;
+            color: rgba(255, 159, 67, 0.3);
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -30px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* أيقونة دوران في المنتصف */
+        .central-emoji {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: #ff9f43;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
     </style>
 </head>
 <body>
+    <!-- خلفية الأيموجي المتحركة -->
+    <div class="background">
+        <span style="top: 10%; left: 5%; animation-delay: -2s;">💈</span>
+        <span style="top: 30%; right: 10%; animation-delay: -1s;">✂️</span>
+        <span style="bottom: 15%; left: 20%; animation-delay: -3s;">💅</span>
+        <span style="top: 60%; right: 30%; animation-delay: -4s;">🌕</span>
+        <span style="bottom: 5%; left: 40%; animation-delay: -5s;">🌝</span>
+    </div>
+
+    <!-- الأيقونة الدوران -->
+    <div class="central-emoji">💈</div>
+
     <!-- شريط الجانبي -->
     <div class="sidebar">
         <h2>إدارة صالون الحلاقة</h2>
-        <a href="customer-selection.html">إضافة زبون 👨</a>
-        <a href="customers-list.html">عرض الزبائن 📋</a>
-        <a href="services.html">إدارة الخدمات ✂️</a>
-        <a href="invoices.html">إدارة الفواتير 🧾</a>
-        <a href="invoice-search.html">بحث عن فاتورة 🔍</a>
-        <a href="home.html">تسجيل خروج 🚪</a>
+        <a href="customer-selection.html">
+            <i>🧔</i> إضافة زبون
+        </a>
+        <a href="customers-list.html">
+            <i>📋</i> عرض الزبائن
+        </a>
+        <a href="services.html">
+            <i>✂️</i> إدارة الخدمات
+        </a>
+        <a href="invoices.html">
+            <i>🧾</i> إدارة الفواتير
+        </a>
+        <a href="invoice-search.html">
+            <i>🔍</i> بحث عن فاتورة
+        </a>
+        <a href="home.html">
+            <i>🚪</i> تسجيل خروج
+        </a>
     </div>
 
     <!-- الجزء الرئيسي -->
     <div class="main-content">
-        <h1>إحصائيات اليوم</h1>
+        <h1 style="color: #ff9f43; text-align: center; margin-bottom: 50px;">إحصائيات اليوم</h1>
 
         <div class="statistics">
             <!-- عدد الزبائن -->
-            <div class="stat">
-                <h3>الزبائن</h3>
+            <div class="stat-card">
+                <div class="emoji">🧔</div>
+                <h3>عدد الزبائن</h3>
                 <span id="customers-count">0</span>
-                <span class="emoji">🧔</span>
             </div>
 
             <!-- الفواتير غير المدفوعة -->
-            <div class="stat">
+            <div class="stat-card">
+                <div class="emoji">⚠️</div>
                 <h3>غير مدفوعة</h3>
                 <span id="unpaid-invoices">0</span>
-                <span class="emoji">⚠️</span>
             </div>
 
             <!-- الخدمة الأكثر طلبًا -->
-            <div class="stat">
+            <div class="stat-card">
+                <div class="emoji">💇</div>
                 <h3>الأكثر طلبًا</h3>
                 <span id="top-service">...</span>
-                <span class="emoji">💇</span>
             </div>
         </div>
 
-        <button onclick="refreshStats()">تحديث الإحصائيات</button>
+        <button onclick="refreshStats()" style="margin-top: 40px; padding: 15px 30px; background: #ff9f43; color: #1a1a1a; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;">
+            تحديث الإحصائيات
+        </button>
     </div>
 
     <script>
@@ -166,7 +283,7 @@
                 }
             }
 
-            return topCount === 0 ? 'لا يوجد' : topService;
+            return maxCount === 0 ? 'لا يوجد' : topService;
         }
 
         // تحديث الإحصائيات
